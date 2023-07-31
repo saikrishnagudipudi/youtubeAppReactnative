@@ -14,9 +14,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {ActiveVideo} from './Action';
 
 interface IProps {
   globalState: any;
+  clickVideo: (id: string) => void;
+  navigation?: {push: (arg: string) => void};
 }
 interface IState {
   subActive: number;
@@ -59,6 +62,11 @@ class Subscription extends Component<IProps, IState> {
   onClickActive = (id: number) => {
     this.setState({subActive: id});
   };
+  playVideo = async (id: string) => {
+    await this.props.clickVideo(id);
+    this.props.navigation?.push('VideoPlayers');
+  };
+
   render() {
     const getState = this.props.globalState;
     const {subActive} = this.state;
@@ -179,7 +187,10 @@ class Subscription extends Component<IProps, IState> {
           </View>
           {getState.videoList.map((item: any) => {
             return (
-              <TouchableOpacity key={item.id} style={styles.videoContainer}>
+              <TouchableOpacity
+                key={item.id}
+                style={styles.videoContainer}
+                onPress={() => this.playVideo(item.id)}>
                 <ImageBackground
                   source={{uri: item.thumbnailUrl}}
                   resizeMode="stretch"
@@ -240,7 +251,9 @@ const mapStateToProps = (state: any) => {
 };
 
 const mapDispatchToProps = (dispatch: any) => {
-  return {};
+  return {
+    clickVideo: (para: string) => dispatch(ActiveVideo(para)),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Subscription);
@@ -252,11 +265,12 @@ const styles = StyleSheet.create({
   subscriptionContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     marginTop: hp('1'),
   },
   subImage: {
-    height: hp('8'),
-    width: wp('17'),
+    height: hp('6'),
+    width: wp('14'),
   },
   subTechnical: {
     flexDirection: 'column',
@@ -340,11 +354,13 @@ const styles = StyleSheet.create({
   },
   durationContainer: {
     height: hp('3'),
-    width: wp('12'),
+    // width: wp('12'),
     backgroundColor: '#000',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingLeft: wp('0.5'),
+    paddingRight: wp('0.5'),
   },
   durationTimeText: {
     color: '#000000',

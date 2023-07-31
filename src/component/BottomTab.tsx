@@ -31,6 +31,10 @@ class BottomTab extends Component<IProps, IState> {
     this.props.navigation?.push('Profile');
   };
 
+  onSearch = () => {
+    this.props.navigation?.push('Search');
+  };
+
   render() {
     const getState = this.props.globalState;
     // console.log(this.props.globalState);
@@ -78,6 +82,7 @@ class BottomTab extends Component<IProps, IState> {
               name="search1"
               color={getState.themeMode ? '#ffffff' : '#000000cc'}
               size={hp('3.4')}
+              onPress={this.onSearch}
             />
             <FontAwesome
               name="user-circle"
@@ -207,7 +212,9 @@ class BottomTab extends Component<IProps, IState> {
                   <Text
                     style={[
                       styles.labelInActiveStyle,
-                      getState.themeMode ? {color: '#fff'} : {color: '#000'},
+                      getState.themeMode
+                        ? {color: '#fff', fontSize: hp('1.4')}
+                        : {color: '#000', fontSize: hp('1.4')},
                     ]}>
                     Subscription
                   </Text>

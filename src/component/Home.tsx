@@ -14,6 +14,7 @@ import {
 } from 'react-native-responsive-screen';
 import {connect} from 'react-redux';
 import Entypo from 'react-native-vector-icons/Entypo';
+import {ActiveVideo} from './Action';
 const buttonList = [
   {
     id: 1,
@@ -30,6 +31,8 @@ const buttonList = [
 ];
 interface IProps {
   globalState: any;
+  navigation?: {push: (arg: string) => void};
+  clickVideo: (id: string) => void;
 }
 interface IState {
   activeId: number;
@@ -43,6 +46,12 @@ class Home extends Component<IProps, IState> {
   onClickTopButton = (id: number) => {
     this.setState({activeId: id});
   };
+
+  onClickVideo = async (id: string) => {
+    await this.props.clickVideo(id);
+    this.props.navigation?.push('VideoPlayers');
+  };
+
   render() {
     const getState = this.props.globalState;
     const {activeId} = this.state;
@@ -123,7 +132,9 @@ class Home extends Component<IProps, IState> {
           keyExtractor={item => item.id}
           renderItem={({item}) => {
             return (
-              <TouchableOpacity style={styles.videoContainer}>
+              <TouchableOpacity
+                onPress={() => this.onClickVideo(item.id)}
+                style={styles.videoContainer}>
                 <ImageBackground
                   source={{uri: item.thumbnailUrl}}
                   resizeMode="stretch"
@@ -184,7 +195,9 @@ const mapStateToProps = (state: any) => {
 };
 
 const mapDispatchToProps = (dispatch: any) => {
-  return {};
+  return {
+    clickVideo: (para: string) => dispatch(ActiveVideo(para)),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
@@ -272,11 +285,13 @@ const styles = StyleSheet.create({
   },
   durationContainer: {
     height: hp('3'),
-    width: wp('12'),
+    // width: wp('12'),
     backgroundColor: '#000',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingLeft: wp("0.5"),
+    paddingRight: wp("0.5")
   },
   durationTimeText: {
     color: '#000000',
@@ -297,7 +312,7 @@ const styles = StyleSheet.create({
   },
   thumbnailImage: {
     height: hp('6'),
-    width: wp('11'),
+    width: wp('12'),
     borderRadius: hp('30'),
   },
   titleTextContainer: {

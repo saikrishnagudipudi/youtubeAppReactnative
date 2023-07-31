@@ -13,6 +13,8 @@ import Landing from './Landing';
 import {ThemeChange} from './Action';
 import BottomTab from './BottomTab';
 import Profile from './Profile';
+import VideoPlayers from './VideoPlayers';
+import Search from './Search';
 
 interface IProps {
   globalState: any;
@@ -42,6 +44,8 @@ export class First extends Component<IProps, IState> {
           <Stack.Screen name="Landing" component={Landing} />
           <Stack.Screen name="BottomTab" component={BottomTab} />
           <Stack.Screen name="Profile" component={Profile} />
+          <Stack.Screen name="VideoPlayers" component={VideoPlayers} />
+          <Stack.Screen name="Search" component={Search} />
         </Stack.Navigator>
       </NavigationContainer>
     );

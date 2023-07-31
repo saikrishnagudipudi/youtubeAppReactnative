@@ -15,8 +15,11 @@ import {
 } from 'react-native-responsive-screen';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {connect} from 'react-redux';
+import { ActiveVideo } from './Action';
 interface IProps {
   globalState: any;
+   clickVideo: (id: string) => void;
+  navigation?: {push: (arg: string) => void};
 }
 
 // const imagesList = [
@@ -60,6 +63,10 @@ interface IProps {
 
 interface IState {}
 class Explore extends Component<IProps, IState> {
+   playVideo = async (id: string) => {
+    await this.props.clickVideo(id);
+    this.props.navigation?.push('VideoPlayers');
+  };
   render() {
     const getState = this.props.globalState;
     return (
@@ -137,7 +144,7 @@ class Explore extends Component<IProps, IState> {
           </Text>
           {getState.videoList.map((item: any) => {
             return (
-              <TouchableOpacity key={item.id} style={styles.videoContainer}>
+              <TouchableOpacity key={item.id} style={styles.videoContainer} onPress={() => this.playVideo(item.id)}>
                 <ImageBackground
                   source={{uri: item.thumbnailUrl}}
                   resizeMode="stretch"
@@ -197,7 +204,9 @@ const mapStateToProps = (state: any) => {
 };
 
 const mapDispatchToProps = (dispatch: any) => {
-  return {};
+  return {
+    clickVideo: (para: string) => dispatch(ActiveVideo(para)),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Explore);
@@ -250,11 +259,13 @@ const styles = StyleSheet.create({
   },
   durationContainer: {
     height: hp('3'),
-    width: wp('12'),
+    // width: wp('12'),
     backgroundColor: '#000',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingLeft: wp('0.5'),
+    paddingRight: wp('0.5'),
   },
   durationTimeText: {
     color: '#000000',
@@ -275,7 +286,7 @@ const styles = StyleSheet.create({
   },
   thumbnailImage: {
     height: hp('6'),
-    width: wp('11'),
+    width: wp('12'),
     borderRadius: hp('30'),
   },
   titleTextContainer: {
