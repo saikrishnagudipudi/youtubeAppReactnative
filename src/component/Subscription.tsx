@@ -137,6 +137,7 @@ class Subscription extends Component<IProps, IState> {
               {subButtonList.map(item => {
                 return (
                   <TouchableOpacity
+                    key={item.id}
                     onPress={() => this.onClickActive(item.id)}
                     style={[
                       subActive === item.id
@@ -363,7 +364,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   thumbnailImage: {
-    height: hp('6.5'),
+    height: hp('6'),
     width: wp('11'),
     borderRadius: hp('30'),
   },

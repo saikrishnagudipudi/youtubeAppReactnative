@@ -7,8 +7,8 @@ const initialState = {
       thumbnailUrl:
         'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Big_Buck_Bunny_thumbnail_vlc.png/1200px-Big_Buck_Bunny_thumbnail_vlc.png',
       duration: '8:18',
-      uploadTime: 'May 9, 2011',
-      views: '24,969,123',
+      uploadTime: '4 Years ago',
+      views: '24M',
       author: 'Vlc Media Player',
       videoUrl:
         'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
@@ -23,8 +23,8 @@ const initialState = {
       thumbnailUrl:
         'https://res.cloudinary.com/duujfpr1f/image/upload/v1690615059/Screenshot_from_2023-07-29_12-34-55_qko0yg.png',
       duration: '12:18',
-      uploadTime: 'May 9, 2011',
-      views: '24,969,123',
+      uploadTime: '3.6 Years ago',
+      views: '20M',
       author: 'Blender Inc.',
       videoUrl:
         'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
@@ -39,8 +39,8 @@ const initialState = {
       thumbnailUrl:
         'https://res.cloudinary.com/duujfpr1f/image/upload/v1690615187/Screenshot_from_2023-07-29_12-49-36_myqhjg.png',
       duration: '8:18',
-      uploadTime: 'May 9, 2011',
-      views: '24,969,123',
+      uploadTime: '4 Years ago',
+      views: '25M',
       author: 'T-Series Regional',
       videoUrl:
         'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
@@ -55,8 +55,8 @@ const initialState = {
       thumbnailUrl:
         'https://img.jakpost.net/c/2019/09/03/2019_09_03_78912_1567484272._large.jpg',
       duration: '8:18',
-      uploadTime: 'May 9, 2011',
-      views: '24,969,123',
+      uploadTime: '5 Years ago',
+      views: '27M',
       author: 'T-Series Regional',
       videoUrl:
         'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
@@ -71,8 +71,8 @@ const initialState = {
       thumbnailUrl:
         'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Big_Buck_Bunny_thumbnail_vlc.png/1200px-Big_Buck_Bunny_thumbnail_vlc.png',
       duration: '8:18',
-      uploadTime: 'May 9, 2011',
-      views: '24,969,123',
+      uploadTime: '4 Years ago',
+      views: '24M',
       author: 'Vlc Media Player',
       videoUrl:
         'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
@@ -87,8 +87,8 @@ const initialState = {
       thumbnailUrl:
         'https://res.cloudinary.com/duujfpr1f/image/upload/v1690615187/Screenshot_from_2023-07-29_12-49-36_myqhjg.png',
       duration: '8:18',
-      uploadTime: 'May 9, 2011',
-      views: '24,969,123',
+      uploadTime: '3 Years ago',
+      views: '28M',
       author: 'T-Series Regional',
       videoUrl:
         'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
@@ -103,8 +103,8 @@ const initialState = {
       thumbnailUrl:
         'https://img.jakpost.net/c/2019/09/03/2019_09_03_78912_1567484272._large.jpg',
       duration: '8:18',
-      uploadTime: 'May 9, 2011',
-      views: '24,969,123',
+      uploadTime: '3.6 Years ago',
+      views: '21M',
       author: 'T-Series Regional',
       videoUrl:
         'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
@@ -119,8 +119,8 @@ const initialState = {
       thumbnailUrl:
         'https://res.cloudinary.com/duujfpr1f/image/upload/v1690615059/Screenshot_from_2023-07-29_12-34-55_qko0yg.png',
       duration: '12:18',
-      uploadTime: 'May 9, 2011',
-      views: '24,969,123',
+      uploadTime: '4 Years ago',
+      views: '24M',
       author: 'Blender Inc.',
       videoUrl:
         'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',

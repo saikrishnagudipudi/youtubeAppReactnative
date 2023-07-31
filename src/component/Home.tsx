@@ -296,7 +296,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   thumbnailImage: {
-    height: hp('6.5'),
+    height: hp('6'),
     width: wp('11'),
     borderRadius: hp('30'),
   },

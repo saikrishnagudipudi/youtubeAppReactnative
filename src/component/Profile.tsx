@@ -30,186 +30,188 @@ class Profile extends Component<IProps, IState> {
             ? {backgroundColor: '#000000cc'}
             : {backgroundColor: '#ffffff'},
         ]}>
-        <View style={styles.accountHeaderContainer}>
-          <AntDesign
-            onPress={this.goHome}
-            name="left"
-            color={getState.themeMode ? '#fff' : '#000'}
-            size={hp('3')}
-          />
-          <View style={styles.accountTextContainer}>
-            <Text style={styles.accountText}>Account</Text>
+        <View>
+          <View style={styles.accountHeaderContainer}>
+            <AntDesign
+              onPress={this.goHome}
+              name="left"
+              color={getState.themeMode ? '#fff' : '#000'}
+              size={hp('3')}
+            />
+            <View style={styles.accountTextContainer}>
+              <Text style={styles.accountText}>Account</Text>
+            </View>
           </View>
-        </View>
-        <View style={styles.accountHeaderContainer}>
-          <FontAwesome
-            name="user-circle"
-            color={getState.themeMode ? '#ffffff' : '#000000cc'}
-            size={hp('6')}
-          />
-          <View style={{marginLeft: wp('3')}}>
+          <View style={styles.accountHeaderContainer}>
+            <FontAwesome
+              name="user-circle"
+              color={getState.themeMode ? '#ffffff' : '#000000cc'}
+              size={hp('6')}
+            />
+            <View style={{marginLeft: wp('3')}}>
+              <Text
+                style={[
+                  styles.accountName,
+                  getState.themeMode ? {color: '#fff'} : {color: '#000'},
+                ]}>
+                Sai Krishna Gudipudi{' '}
+                <AntDesign
+                  name="down"
+                  color={getState.themeMode ? '#fff' : '#000'}
+                  size={hp('2')}
+                />
+              </Text>
+              <Text
+                style={[
+                  styles.accountName,
+                  getState.themeMode ? {color: '#fff'} : {color: '#000'},
+                ]}>
+                saikrishna.gudipudi@extwebtech.in
+              </Text>
+              <Text style={styles.manageText}>Manage your Google Account</Text>
+            </View>
+          </View>
+          <View style={styles.accountHeaderContainer}>
+            <MaterialCommunityIcons
+              name="account-box-outline"
+              color={getState.themeMode ? '#ffffff' : '#000000cc'}
+              size={hp('4')}
+            />
             <Text
               style={[
-                styles.accountName,
+                styles.yourChannelText,
                 getState.themeMode ? {color: '#fff'} : {color: '#000'},
               ]}>
-              Sai Krishna Gudipudi{' '}
-              <AntDesign
-                name="down"
-                color={getState.themeMode ? '#fff' : '#000'}
-                size={hp('2')}
-              />
+              Your Channel
             </Text>
+          </View>
+          <View style={styles.accountHeaderContainer}>
+            <Image
+              tintColor={getState.themeMode ? '#fff' : '#000'}
+              source={require('./assets/settings.png')}
+              resizeMode="stretch"
+              style={styles.youtubeSettingImage}
+            />
             <Text
               style={[
-                styles.accountName,
+                styles.yourChannelText,
                 getState.themeMode ? {color: '#fff'} : {color: '#000'},
               ]}>
-              saikrishna.gudipudi@extwebtech.in
+              YouTube Studio
             </Text>
-            <Text style={styles.manageText}>Manage your Google Account</Text>
           </View>
-        </View>
-        <View style={styles.accountHeaderContainer}>
-          <MaterialCommunityIcons
-            name="account-box-outline"
-            color={getState.themeMode ? '#ffffff' : '#000000cc'}
-            size={hp('4')}
-          />
-          <Text
-            style={[
-              styles.yourChannelText,
-              getState.themeMode ? {color: '#fff'} : {color: '#000'},
-            ]}>
-            Your Channel
-          </Text>
-        </View>
-        <View style={styles.accountHeaderContainer}>
-          <Image
-            tintColor={getState.themeMode ? '#fff' : '#000'}
-            source={require('./assets/settings.png')}
-            resizeMode="stretch"
-            style={styles.youtubeSettingImage}
-          />
-          <Text
-            style={[
-              styles.yourChannelText,
-              getState.themeMode ? {color: '#fff'} : {color: '#000'},
-            ]}>
-            YouTube Studio
-          </Text>
-        </View>
-        <View style={styles.accountHeaderContainer}>
-          <MaterialIcons
-            name="bar-chart"
-            color={getState.themeMode ? '#ffffff' : '#000000cc'}
-            size={hp('4')}
-          />
-          <Text
-            style={[
-              styles.yourChannelText,
-              getState.themeMode ? {color: '#fff'} : {color: '#000'},
-            ]}>
-            Time watched
-          </Text>
-        </View>
-        <View style={styles.accountHeaderContainer}>
-          <Feather
-            name="youtube"
-            color={getState.themeMode ? '#ffffff' : '#000000cc'}
-            size={hp('4')}
-          />
-          <Text
-            style={[
-              styles.yourChannelText,
-              getState.themeMode ? {color: '#fff'} : {color: '#000'},
-            ]}>
-            Get YouTube Premium
-          </Text>
-        </View>
-        <View style={styles.accountHeaderContainer}>
-          <FontAwesome
-            name="dollar"
-            color={getState.themeMode ? '#ffffff' : '#000000cc'}
-            size={hp('3')}
-          />
-          <Text
-            style={[
-              styles.yourChannelText,
-              getState.themeMode ? {color: '#fff'} : {color: '#000'},
-            ]}>
-            Purchases and memberships
-          </Text>
-        </View>
-        <View style={styles.accountHeaderContainer}>
-          <MaterialCommunityIcons
-            name="account-box-multiple-outline"
-            color={getState.themeMode ? '#ffffff' : '#000000cc'}
-            size={hp('4')}
-          />
-          <Text
-            style={[
-              styles.yourChannelText,
-              getState.themeMode ? {color: '#fff'} : {color: '#000'},
-            ]}>
-            Switch account
-          </Text>
-        </View>
-        <View style={styles.accountHeaderContainer}>
-          <MaterialCommunityIcons
-            name="incognito"
-            color={getState.themeMode ? '#ffffff' : '#000000cc'}
-            size={hp('4')}
-          />
-          <Text
-            style={[
-              styles.yourChannelText,
-              getState.themeMode ? {color: '#fff'} : {color: '#000'},
-            ]}>
-            Turn on Incognito
-          </Text>
-        </View>
-        <View style={styles.accountHeaderContainer}>
-          <MaterialCommunityIcons
-            name="shield-account-outline"
-            color={getState.themeMode ? '#ffffff' : '#000000cc'}
-            size={hp('4')}
-          />
-          <Text
-            style={[
-              styles.yourChannelText,
-              getState.themeMode ? {color: '#fff'} : {color: '#000'},
-            ]}>
-            Your data in YouTube
-          </Text>
-        </View>
-        <View style={styles.accountHeaderContainer}>
-          <Feather
-            name="settings"
-            color={getState.themeMode ? '#ffffff' : '#000000cc'}
-            size={hp('4')}
-          />
-          <Text
-            style={[
-              styles.yourChannelText,
-              getState.themeMode ? {color: '#fff'} : {color: '#000'},
-            ]}>
-            Settings
-          </Text>
-        </View>
-        <View style={styles.accountHeaderContainer}>
-          <AntDesign
-            name="questioncircleo"
-            color={getState.themeMode ? '#ffffff' : '#000000cc'}
-            size={hp('4')}
-          />
-          <Text
-            style={[
-              styles.yourChannelText,
-              getState.themeMode ? {color: '#fff'} : {color: '#000'},
-            ]}>
-            Help and feedback
-          </Text>
+          <View style={styles.accountHeaderContainer}>
+            <MaterialIcons
+              name="bar-chart"
+              color={getState.themeMode ? '#ffffff' : '#000000cc'}
+              size={hp('4')}
+            />
+            <Text
+              style={[
+                styles.yourChannelText,
+                getState.themeMode ? {color: '#fff'} : {color: '#000'},
+              ]}>
+              Time watched
+            </Text>
+          </View>
+          <View style={styles.accountHeaderContainer}>
+            <Feather
+              name="youtube"
+              color={getState.themeMode ? '#ffffff' : '#000000cc'}
+              size={hp('4')}
+            />
+            <Text
+              style={[
+                styles.yourChannelText,
+                getState.themeMode ? {color: '#fff'} : {color: '#000'},
+              ]}>
+              Get YouTube Premium
+            </Text>
+          </View>
+          <View style={styles.accountHeaderContainer}>
+            <FontAwesome
+              name="dollar"
+              color={getState.themeMode ? '#ffffff' : '#000000cc'}
+              size={hp('3')}
+            />
+            <Text
+              style={[
+                styles.yourChannelText,
+                getState.themeMode ? {color: '#fff'} : {color: '#000'},
+              ]}>
+              Purchases and memberships
+            </Text>
+          </View>
+          <View style={styles.accountHeaderContainer}>
+            <MaterialCommunityIcons
+              name="account-box-multiple-outline"
+              color={getState.themeMode ? '#ffffff' : '#000000cc'}
+              size={hp('4')}
+            />
+            <Text
+              style={[
+                styles.yourChannelText,
+                getState.themeMode ? {color: '#fff'} : {color: '#000'},
+              ]}>
+              Switch account
+            </Text>
+          </View>
+          <View style={styles.accountHeaderContainer}>
+            <MaterialCommunityIcons
+              name="incognito"
+              color={getState.themeMode ? '#ffffff' : '#000000cc'}
+              size={hp('4')}
+            />
+            <Text
+              style={[
+                styles.yourChannelText,
+                getState.themeMode ? {color: '#fff'} : {color: '#000'},
+              ]}>
+              Turn on Incognito
+            </Text>
+          </View>
+          <View style={styles.accountHeaderContainer}>
+            <MaterialCommunityIcons
+              name="shield-account-outline"
+              color={getState.themeMode ? '#ffffff' : '#000000cc'}
+              size={hp('4')}
+            />
+            <Text
+              style={[
+                styles.yourChannelText,
+                getState.themeMode ? {color: '#fff'} : {color: '#000'},
+              ]}>
+              Your data in YouTube
+            </Text>
+          </View>
+          <View style={styles.accountHeaderContainer}>
+            <Feather
+              name="settings"
+              color={getState.themeMode ? '#ffffff' : '#000000cc'}
+              size={hp('4')}
+            />
+            <Text
+              style={[
+                styles.yourChannelText,
+                getState.themeMode ? {color: '#fff'} : {color: '#000'},
+              ]}>
+              Settings
+            </Text>
+          </View>
+          <View style={styles.accountHeaderContainer}>
+            <AntDesign
+              name="questioncircleo"
+              color={getState.themeMode ? '#ffffff' : '#000000cc'}
+              size={hp('4')}
+            />
+            <Text
+              style={[
+                styles.yourChannelText,
+                getState.themeMode ? {color: '#fff'} : {color: '#000'},
+              ]}>
+              Help and feedback
+            </Text>
+          </View>
         </View>
         <View style={styles.termsContainer}>
           <Text
@@ -240,6 +242,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(Profile);
 const styles = StyleSheet.create({
   profileContainer: {
     flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
     padding: hp('2'),
   },
   accountHeaderContainer: {
@@ -251,7 +256,7 @@ const styles = StyleSheet.create({
     marginBottom: hp('1'),
   },
   accountTextContainer: {
-    width: wp('75'),
+    width: wp('82.5'),
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -286,15 +291,17 @@ const styles = StyleSheet.create({
     width: wp('9'),
   },
   termsContainer: {
-    height: hp('4.5'),
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'flex-end',
+    width: wp('95'),
+    // flexDirection: 'row',
+    // justifyContent: 'center',
+    // alignItems: 'flex-end',
   },
   termsText: {
     color: '#000000',
     fontSize: hp('2'),
     fontFamily: 'Inter',
     fontWeight: '500',
+    textAlign: 'center',
+    marginTop: hp('1'),
   },
 });
