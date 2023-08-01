@@ -85,20 +85,27 @@ class Profile extends Component<IProps, IState> {
               Your Channel
             </Text>
           </View>
-          <View style={styles.accountHeaderContainer}>
-            <Image
-              tintColor={getState.themeMode ? '#fff' : '#000'}
-              source={require('./assets/settings.png')}
-              resizeMode="stretch"
-              style={styles.youtubeSettingImage}
+          <View style={styles.youtubeStudioContainer}>
+            <View style={styles.youtubeStudioTextContainer}>
+              <Image
+                tintColor={getState.themeMode ? '#fff' : '#000'}
+                source={require('./assets/settings.png')}
+                resizeMode="stretch"
+                style={styles.youtubeSettingImage}
+              />
+              <Text
+                style={[
+                  styles.yourChannelText,
+                  getState.themeMode ? {color: '#fff'} : {color: '#000'},
+                ]}>
+                YouTube Studio
+              </Text>
+            </View>
+            <Feather
+              name="external-link"
+              color={getState.themeMode ? '#ffffff' : '#000000cc'}
+              size={hp('3.5')}
             />
-            <Text
-              style={[
-                styles.yourChannelText,
-                getState.themeMode ? {color: '#fff'} : {color: '#000'},
-              ]}>
-              YouTube Studio
-            </Text>
           </View>
           <View style={styles.accountHeaderContainer}>
             <MaterialIcons
@@ -303,5 +310,19 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     textAlign: 'center',
     marginTop: hp('1'),
+  },
+  youtubeStudioContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#C4C4C426',
+    padding: hp('1'),
+    borderRadius: hp('1'),
+    marginBottom: hp('1'),
+  },
+  youtubeStudioTextContainer: {
+    flexDirection: 'row',
+    // justifyContent: 'space-between',/
+    alignItems: 'center',
   },
 });

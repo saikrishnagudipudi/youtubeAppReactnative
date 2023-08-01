@@ -1,13 +1,9 @@
 import React, {Component} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Provider, connect} from 'react-redux';
+import {connect} from 'react-redux';
 
 const Stack = createNativeStackNavigator();
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
 import {Appearance} from 'react-native';
 import Landing from './Landing';
 import {ThemeChange} from './Action';

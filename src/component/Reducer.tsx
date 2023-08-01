@@ -131,8 +131,10 @@ const initialState = {
     },
   ],
   activeVideo: [],
+  historyList: [],
 };
-
+// videoDuration: videoDuration,
+//       seeks: videoDurationValue,
 const Reducer = (state = initialState, action: any) => {
   switch (action.type) {
     case 'THEME':
@@ -146,6 +148,33 @@ const Reducer = (state = initialState, action: any) => {
       );
       return {...state, activeVideo: filterVideo};
     }
+    case 'HISTORY': {
+      const removeSame = state.historyList.filter(
+        (each: {id: string}) => each.id !== action.payload.item.id,
+      );
+      const filterVideo = state.videoList.filter(
+        each => each.id === action.payload.item.id,
+      );
+      const newData = filterVideo[0];
+      return {
+        ...state,
+        historyList: [
+          ...removeSame,
+          {
+            ...newData,
+            videoDuration: action.payload.item.videoDuration,
+            seeks: action.payload.item.seeks,
+          },
+        ],
+      };
+    }
+    case 'PLAYHISTORYVIDEO': {
+      const filterHistoryVideo = state.historyList.filter(
+        (each: {id: string}) => each.id === action.payload.id,
+      );
+      return {...state, activeVideo: filterHistoryVideo};
+    }
+
     default:
       return state;
   }

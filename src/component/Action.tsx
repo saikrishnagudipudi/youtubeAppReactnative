@@ -11,3 +11,17 @@ export const ActiveVideo = (id: string) => {
     payload: {id: id},
   };
 };
+
+export const HistoryVideo = (item: any) => {
+  return {
+    type: 'HISTORY',
+    payload: {item: item},
+  };
+};
+
+export const PlayHistoryVideo = (id: string) => {
+  return {
+    type: 'PLAYHISTORYVIDEO',
+    payload: {id: id},
+  };
+};

@@ -21,12 +21,23 @@ import Octicons from 'react-native-vector-icons/Octicons';
 
 interface IProps {
   globalState: any;
+  clickPlayHistory: (id: string) => void;
+  navigation?: {push: (arg: string) => void};
 }
 interface IState {}
 import Entypo from 'react-native-vector-icons/Entypo';
+import Slider from '@react-native-community/slider';
+import {PlayHistoryVideo} from './Action';
 class Library extends Component<IProps, IState> {
+  playHistoryVideo = async (id: string) => {
+    await this.props.clickPlayHistory(id);
+    this.props.navigation?.push('VideoPlayers');
+  };
+
   render() {
     const getState = this.props.globalState;
+    // console.log(getState.historyList);
+    // console.log(getState.historyList[0].videoDuration);
     return (
       <View
         style={[
@@ -42,6 +53,76 @@ class Library extends Component<IProps, IState> {
           ]}>
           Recent
         </Text>
+        <View style={styles.historyVideosContainer}>
+          <FlatList
+            data={[...getState.historyList].reverse()}
+            showsHorizontalScrollIndicator={false}
+            style={styles.videoListContainer}
+            horizontal
+            // inverted
+            keyExtractor={item => item.id}
+            renderItem={({item}) => {
+              return (
+                <TouchableOpacity
+                  onPress={() => this.playHistoryVideo(item.id)}
+                  style={styles.videoPageContainer}>
+                  <ImageBackground
+                    source={{uri: item.thumbnailUrl}}
+                    resizeMode="stretch"
+                    style={styles.videoThumbBackImage}>
+                    <View style={styles.thumbDurationContainer}>
+                      <Text
+                        style={[styles.thumbDurationTimeText, {color: '#fff'}]}>
+                        {item.duration}
+                      </Text>
+                    </View>
+                  </ImageBackground>
+                  <View style={styles.historySliderContainer}>
+                    <Slider
+                      style={styles.historySlider}
+                      thumbTintColor="#900"
+                      minimumValue={0}
+                      maximumValue={item.videoDuration}
+                      maximumTrackTintColor="#fff"
+                      minimumTrackTintColor="#900"
+                      value={item.seeks}
+                      // onValueChange={value => this.onChangeVolume(value)}
+                    />
+                  </View>
+                  <View style={styles.thumbTitleVideoContainer}>
+                    <View style={styles.thumbTitleContainer}>
+                      <View style={styles.thumbTitleTextContainer}>
+                        <Text
+                          style={[
+                            styles.thumbVideoTittle,
+                            getState.themeMode
+                              ? {color: '#fff'}
+                              : {color: '#030303'},
+                          ]}>
+                          {item.title}
+                        </Text>
+                        <Text
+                          style={[
+                            styles.thumbViewsText,
+                            getState.themeMode
+                              ? {color: '#fff'}
+                              : {color: '#030303'},
+                          ]}>
+                          {item.views} Views, {item.uploadTime}
+                        </Text>
+                      </View>
+                    </View>
+                    <Entypo
+                      name="dots-three-vertical"
+                      color={getState.themeMode ? '#fff' : '#000'}
+                      size={hp('3')}
+                    />
+                  </View>
+                </TouchableOpacity>
+              );
+            }}
+          />
+        </View>
         <View style={styles.hrLine} />
         <View style={styles.historyButtonContainer}>
           <TouchableOpacity style={styles.historyButton}>
@@ -88,7 +169,7 @@ class Library extends Component<IProps, IState> {
                 ]}>
                 Downloads
               </Text>
-              <Text style={styles.historyDesptions}>20 recommendations</Text>
+              <Text style={styles.historyDescriptions}>20 recommendations</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity style={styles.historyButton}>
@@ -121,7 +202,7 @@ class Library extends Component<IProps, IState> {
                 ]}>
                 Watch later
               </Text>
-              <Text style={styles.historyDesptions}>
+              <Text style={styles.historyDescriptions}>
                 Videos you save for later
               </Text>
             </View>
@@ -140,7 +221,7 @@ class Library extends Component<IProps, IState> {
                 ]}>
                 Liked videos
               </Text>
-              <Text style={styles.historyDesptions}>No Videos</Text>
+              <Text style={styles.historyDescriptions}>No Videos</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -181,7 +262,9 @@ const mapStateToProps = (state: any) => {
 };
 
 const mapDispatchToProps = (dispatch: any) => {
-  return {};
+  return {
+    clickPlayHistory: (para: string) => dispatch(PlayHistoryVideo(para)),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Library);
@@ -212,12 +295,10 @@ const styles = StyleSheet.create({
     height: hp('7'),
     width: wp('45.5'),
     flexDirection: 'row',
-    // justifyContent: "center",
     alignItems: 'center',
     backgroundColor: '#C4C4C426',
     padding: hp('1'),
     borderRadius: hp('1'),
-    // marginBottom: hp('1'),
   },
   historyText: {
     color: '#000000',
@@ -226,9 +307,9 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginLeft: wp('2.5'),
   },
-  historyDesptions: {
+  historyDescriptions: {
     color: '#979797',
-    fontSize: hp('1.5'),
+    fontSize: hp('1.3'),
     fontFamily: 'Inter',
     fontWeight: '500',
     marginLeft: wp('2.5'),
@@ -268,5 +349,87 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter',
     fontWeight: '500',
     marginLeft: wp('2'),
+  },
+  historyVideosContainer: {
+    // marginRight: wp("-4")
+  },
+  videoListContainer: {
+    marginTop: hp('1.5'),
+  },
+  videoPageContainer: {
+    marginBottom: hp('3'),
+    marginRight: hp('1.2'),
+  },
+  videoThumbBackImage: {
+    height: hp('15'),
+    width: wp('46'),
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
+    padding: hp('1'),
+    borderRadius: hp('2'),
+  },
+  thumbDurationContainer: {
+    height: hp('3'),
+    // width: wp('12'),
+    backgroundColor: '#000',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingLeft: wp('0.5'),
+    paddingRight: wp('0.5'),
+  },
+  historySliderContainer: {
+    position: 'absolute',
+    top: hp(14),
+    left: wp(-4),
+  },
+  historySlider: {
+    height: hp('2'),
+    width: wp('54'),
+    marginLeft: 0,
+  },
+  thumbDurationTimeText: {
+    color: '#000000',
+    fontSize: hp('2.2'),
+    fontFamily: 'Inter',
+    fontWeight: '500',
+    // marginLeft: wp('2'),
+  },
+  thumbTitleVideoContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    marginTop: hp('1.5'),
+    paddingLeft: wp('1'),
+    paddingRight: wp('1'),
+    // borderWidth: 1,
+  },
+  thumbTitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  thumbThumbnailImage: {
+    height: hp('3'),
+    width: wp('5'),
+    borderRadius: hp('30'),
+  },
+  thumbTitleTextContainer: {
+    // marginLeft: hp('1'),
+  },
+  thumbVideoTittle: {
+    width: wp('32'),
+    color: '#030303',
+    fontSize: hp('1.8'),
+    fontFamily: 'Inter',
+    fontWeight: '500',
+    // borderWidth: 1,
+  },
+  thumbViewsText: {
+    color: '#030303',
+    // width: wp('70'),
+    fontSize: hp('1.5'),
+    fontFamily: 'Inter',
+    fontWeight: '500',
   },
 });
