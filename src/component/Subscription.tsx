@@ -67,11 +67,15 @@ class Subscription extends Component<IProps, IState> {
     this.props.navigation?.push('VideoPlayers');
   };
 
+  getColorChangeTextThemeMode = () =>
+    this.props.globalState.themeMode ? '#fff' : '#000';
+
   render() {
     const getState = this.props.globalState;
     const {subActive} = this.state;
     return (
       <View
+        testID="SubscriptionScreen"
         style={[
           styles.subContainer,
           getState.themeMode
@@ -89,7 +93,7 @@ class Subscription extends Component<IProps, IState> {
               <Text
                 style={[
                   styles.technicalText,
-                  getState.themeMode ? {color: '#fff'} : {color: '#000'},
+                  {color: this.getColorChangeTextThemeMode()},
                 ]}>
                 Technical
               </Text>
@@ -103,7 +107,7 @@ class Subscription extends Component<IProps, IState> {
               <Text
                 style={[
                   styles.technicalText,
-                  getState.themeMode ? {color: '#fff'} : {color: '#000'},
+                  {color: this.getColorChangeTextThemeMode()},
                 ]}>
                 Netflix
               </Text>
@@ -117,7 +121,7 @@ class Subscription extends Component<IProps, IState> {
               <Text
                 style={[
                   styles.technicalText,
-                  getState.themeMode ? {color: '#fff'} : {color: '#000'},
+                  {color: this.getColorChangeTextThemeMode()},
                 ]}>
                 Marvel
               </Text>
@@ -131,7 +135,7 @@ class Subscription extends Component<IProps, IState> {
               <Text
                 style={[
                   styles.technicalText,
-                  getState.themeMode ? {color: '#fff'} : {color: '#000'},
+                  {color: this.getColorChangeTextThemeMode()},
                 ]}>
                 CharliMarie
               </Text>
@@ -146,20 +150,20 @@ class Subscription extends Component<IProps, IState> {
                 return (
                   <TouchableOpacity
                     key={item.id}
+                    testID={`Buttons${item.id}`}
                     onPress={() => this.onClickActive(item.id)}
                     style={[
                       subActive === item.id
                         ? [
                             styles.buttonActive,
-                            getState.themeMode
-                              ? {backgroundColor: '#fff'}
-                              : {backgroundColor: '#000'},
+                            {
+                              backgroundColor:
+                                this.getColorChangeTextThemeMode(),
+                            },
                           ]
                         : [
                             styles.itemButtonContainer,
-                            getState.themeMode
-                              ? {backgroundColor: '#DADADA5a'}
-                              : {backgroundColor: '#DADADA5a'},
+                            {backgroundColor: '#DADADA5a'},
                           ],
                     ]}>
                     <Text
@@ -173,9 +177,7 @@ class Subscription extends Component<IProps, IState> {
                             ]
                           : [
                               styles.buttonItemText,
-                              getState.themeMode
-                                ? {color: '#fff'}
-                                : {color: '#000'},
+                              {color: this.getColorChangeTextThemeMode()},
                             ],
                       ]}>
                       {item.text}
@@ -188,6 +190,7 @@ class Subscription extends Component<IProps, IState> {
           {getState.videoList.map((item: any) => {
             return (
               <TouchableOpacity
+                testID={`SubscriptionVideos${item.id}`}
                 key={item.id}
                 style={styles.videoContainer}
                 onPress={() => this.playVideo(item.id)}>
@@ -231,7 +234,7 @@ class Subscription extends Component<IProps, IState> {
                   </View>
                   <Entypo
                     name="dots-three-vertical"
-                    color={getState.themeMode ? '#fff' : '#000'}
+                    color={this.getColorChangeTextThemeMode()}
                     size={hp('3')}
                   />
                 </View>

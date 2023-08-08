@@ -1,0 +1,400 @@
+import {fireEvent, render} from '@testing-library/react-native';
+import {Provider} from 'react-redux';
+import {createStore} from 'redux';
+import Subscription from '../src/component/Subscription';
+import Store from '../src/component/Store';
+
+jest.mock('react-native-responsive-screen', () => ({
+  widthPercentageToDP: jest.fn(),
+  heightPercentageToDP: jest.fn(),
+}));
+jest.mock('react-native-vector-icons/Entypo', () => 'Entypo');
+
+const mockFn = jest.fn();
+const subscriptionScreenProps = {
+  globalState: {themeMode: false},
+  clickVideo: jest.fn(),
+  navigation: {
+    push: mockFn,
+  },
+};
+
+const SubscriptionStore1 = createStore(() => {
+  const initialState: any = {
+    themeMode: false,
+    videoList: [
+      {
+        id: '1',
+        title: 'Big Buck Bunny',
+        thumbnailUrl:
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Big_Buck_Bunny_thumbnail_vlc.png/1200px-Big_Buck_Bunny_thumbnail_vlc.png',
+        duration: '9:56',
+        uploadTime: '4 Years ago',
+        views: '24M',
+        author: 'Vlc Media Player',
+        videoUrl:
+          'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+        description:
+          "Big Buck Bunny tells the story of a giant rabbit with a heart bigger than himself. When one sunny day three rodents rudely harass him, something snaps... and the rabbit ain't no bunny anymore! In the typical cartoon tradition he prepares the nasty rodents a comical revenge.\n\nLicensed under the Creative Commons Attribution license\nhttp://www.bigbuckbunny.org",
+        subscriber: '25M',
+        isLive: true,
+      },
+      {
+        id: '2',
+        title: 'The first Blender Open Movie from 2006',
+        thumbnailUrl:
+          'https://res.cloudinary.com/duujfpr1f/image/upload/v1690615059/Screenshot_from_2023-07-29_12-34-55_qko0yg.png',
+        duration: '10:53',
+        uploadTime: '3.6 Years ago',
+        views: '20M',
+        author: 'Blender Inc.',
+        videoUrl:
+          'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+        description:
+          'Song : Raja Raja Kareja Mein Samaja\nAlbum : Raja Kareja Mein Samaja\nArtist : Radhe Shyam Rasia\nSinger : Radhe Shyam Rasia\nMusic Director : Sohan Lal, Dinesh Kumar\nLyricist : Vinay Bihari, Shailesh Sagar, Parmeshwar Premi\nMusic Label : T-Series',
+        subscriber: '20M',
+        isLive: true,
+      },
+      {
+        id: '3',
+        title: 'For Bigger Blazes',
+        thumbnailUrl:
+          'https://res.cloudinary.com/duujfpr1f/image/upload/v1690615187/Screenshot_from_2023-07-29_12-49-36_myqhjg.png',
+        duration: '0:15',
+        uploadTime: '4 Years ago',
+        views: '25M',
+        author: 'T-Series Regional',
+        videoUrl:
+          'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+        description:
+          'Song : Raja Raja Kareja Mein Samaja\nAlbum : Raja Kareja Mein Samaja\nArtist : Radhe Shyam Rasia\nSinger : Radhe Shyam Rasia\nMusic Director : Sohan Lal, Dinesh Kumar\nLyricist : Vinay Bihari, Shailesh Sagar, Parmeshwar Premi\nMusic Label : T-Series',
+        subscriber: '22M',
+        isLive: true,
+      },
+      {
+        id: '4',
+        title: 'For Bigger Escape',
+        thumbnailUrl:
+          'https://img.jakpost.net/c/2019/09/03/2019_09_03_78912_1567484272._large.jpg',
+        duration: '0:15',
+        uploadTime: '5 Years ago',
+        views: '27M',
+        author: 'T-Series Regional',
+        videoUrl:
+          'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+        description:
+          " Introducing Chromecast. The easiest way to enjoy online video and music on your TV—for when Batman's escapes aren't quite big enough. For $35. Learn how to use Chromecast with Google Play Movies and more at google.com/chromecast.",
+        subscriber: '28M',
+        isLive: false,
+      },
+      {
+        id: '5',
+        title: 'Big Buck Bunny',
+        thumbnailUrl:
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Big_Buck_Bunny_thumbnail_vlc.png/1200px-Big_Buck_Bunny_thumbnail_vlc.png',
+        duration: '9:56',
+        uploadTime: '4 Years ago',
+        views: '24M',
+        author: 'Vlc Media Player',
+        videoUrl:
+          'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+        description:
+          "Big Buck Bunny tells the story of a giant rabbit with a heart bigger than himself. When one sunny day three rodents rudely harass him, something snaps... and the rabbit ain't no bunny anymore! In the typical cartoon tradition he prepares the nasty rodents a comical revenge.\n\nLicensed under the Creative Commons Attribution license\nhttp://www.bigbuckbunny.org",
+        subscriber: '25M',
+        isLive: true,
+      },
+      {
+        id: '6',
+        title: 'For Bigger Blazes',
+        thumbnailUrl:
+          'https://res.cloudinary.com/duujfpr1f/image/upload/v1690615187/Screenshot_from_2023-07-29_12-49-36_myqhjg.png',
+        duration: '0:15',
+        uploadTime: '3 Years ago',
+        views: '28M',
+        author: 'T-Series Regional',
+        videoUrl:
+          'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+        description:
+          'Song : Raja Raja Kareja Mein Samaja\nAlbum : Raja Kareja Mein Samaja\nArtist : Radhe Shyam Rasia\nSinger : Radhe Shyam Rasia\nMusic Director : Sohan Lal, Dinesh Kumar\nLyricist : Vinay Bihari, Shailesh Sagar, Parmeshwar Premi\nMusic Label : T-Series',
+        subscriber: '24M',
+        isLive: false,
+      },
+      {
+        id: '7',
+        title: 'For Bigger Escape',
+        thumbnailUrl:
+          'https://img.jakpost.net/c/2019/09/03/2019_09_03_78912_1567484272._large.jpg',
+        duration: '0:15',
+        uploadTime: '3.6 Years ago',
+        views: '21M',
+        author: 'T-Series Regional',
+        videoUrl:
+          'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+        description:
+          " Introducing Chromecast. The easiest way to enjoy online video and music on your TV—for when Batman's escapes aren't quite big enough. For $35. Learn how to use Chromecast with Google Play Movies and more at google.com/chromecast.",
+        subscriber: '26M',
+        isLive: true,
+      },
+      {
+        id: '8',
+        title: 'The first Blender Open Movie from 2006',
+        thumbnailUrl:
+          'https://res.cloudinary.com/duujfpr1f/image/upload/v1690615059/Screenshot_from_2023-07-29_12-34-55_qko0yg.png',
+        duration: '10:53',
+        uploadTime: '4 Years ago',
+        views: '24M',
+        author: 'Blender Inc.',
+        videoUrl:
+          'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+        description:
+          'Song : Raja Raja Kareja Mein Samaja\nAlbum : Raja Kareja Mein Samaja\nArtist : Radhe Shyam Rasia\nSinger : Radhe Shyam Rasia\nMusic Director : Sohan Lal, Dinesh Kumar\nLyricist : Vinay Bihari, Shailesh Sagar, Parmeshwar Premi\nMusic Label : T-Series',
+        subscriber: '25M',
+        isLive: false,
+      },
+    ],
+    activeVideo: [],
+    historyList: [],
+  };
+  return {
+    ...initialState,
+  };
+});
+
+const SubscriptionStore2 = createStore(() => {
+  const initialState: any = {
+    themeMode: true,
+    videoList: [
+      {
+        id: '1',
+        title: 'Big Buck Bunny',
+        thumbnailUrl:
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Big_Buck_Bunny_thumbnail_vlc.png/1200px-Big_Buck_Bunny_thumbnail_vlc.png',
+        duration: '9:56',
+        uploadTime: '4 Years ago',
+        views: '24M',
+        author: 'Vlc Media Player',
+        videoUrl:
+          'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+        description:
+          "Big Buck Bunny tells the story of a giant rabbit with a heart bigger than himself. When one sunny day three rodents rudely harass him, something snaps... and the rabbit ain't no bunny anymore! In the typical cartoon tradition he prepares the nasty rodents a comical revenge.\n\nLicensed under the Creative Commons Attribution license\nhttp://www.bigbuckbunny.org",
+        subscriber: '25M',
+        isLive: true,
+      },
+      {
+        id: '2',
+        title: 'The first Blender Open Movie from 2006',
+        thumbnailUrl:
+          'https://res.cloudinary.com/duujfpr1f/image/upload/v1690615059/Screenshot_from_2023-07-29_12-34-55_qko0yg.png',
+        duration: '10:53',
+        uploadTime: '3.6 Years ago',
+        views: '20M',
+        author: 'Blender Inc.',
+        videoUrl:
+          'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+        description:
+          'Song : Raja Raja Kareja Mein Samaja\nAlbum : Raja Kareja Mein Samaja\nArtist : Radhe Shyam Rasia\nSinger : Radhe Shyam Rasia\nMusic Director : Sohan Lal, Dinesh Kumar\nLyricist : Vinay Bihari, Shailesh Sagar, Parmeshwar Premi\nMusic Label : T-Series',
+        subscriber: '20M',
+        isLive: true,
+      },
+      {
+        id: '3',
+        title: 'For Bigger Blazes',
+        thumbnailUrl:
+          'https://res.cloudinary.com/duujfpr1f/image/upload/v1690615187/Screenshot_from_2023-07-29_12-49-36_myqhjg.png',
+        duration: '0:15',
+        uploadTime: '4 Years ago',
+        views: '25M',
+        author: 'T-Series Regional',
+        videoUrl:
+          'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+        description:
+          'Song : Raja Raja Kareja Mein Samaja\nAlbum : Raja Kareja Mein Samaja\nArtist : Radhe Shyam Rasia\nSinger : Radhe Shyam Rasia\nMusic Director : Sohan Lal, Dinesh Kumar\nLyricist : Vinay Bihari, Shailesh Sagar, Parmeshwar Premi\nMusic Label : T-Series',
+        subscriber: '22M',
+        isLive: true,
+      },
+      {
+        id: '4',
+        title: 'For Bigger Escape',
+        thumbnailUrl:
+          'https://img.jakpost.net/c/2019/09/03/2019_09_03_78912_1567484272._large.jpg',
+        duration: '0:15',
+        uploadTime: '5 Years ago',
+        views: '27M',
+        author: 'T-Series Regional',
+        videoUrl:
+          'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+        description:
+          " Introducing Chromecast. The easiest way to enjoy online video and music on your TV—for when Batman's escapes aren't quite big enough. For $35. Learn how to use Chromecast with Google Play Movies and more at google.com/chromecast.",
+        subscriber: '28M',
+        isLive: false,
+      },
+      {
+        id: '5',
+        title: 'Big Buck Bunny',
+        thumbnailUrl:
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Big_Buck_Bunny_thumbnail_vlc.png/1200px-Big_Buck_Bunny_thumbnail_vlc.png',
+        duration: '9:56',
+        uploadTime: '4 Years ago',
+        views: '24M',
+        author: 'Vlc Media Player',
+        videoUrl:
+          'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+        description:
+          "Big Buck Bunny tells the story of a giant rabbit with a heart bigger than himself. When one sunny day three rodents rudely harass him, something snaps... and the rabbit ain't no bunny anymore! In the typical cartoon tradition he prepares the nasty rodents a comical revenge.\n\nLicensed under the Creative Commons Attribution license\nhttp://www.bigbuckbunny.org",
+        subscriber: '25M',
+        isLive: true,
+      },
+      {
+        id: '6',
+        title: 'For Bigger Blazes',
+        thumbnailUrl:
+          'https://res.cloudinary.com/duujfpr1f/image/upload/v1690615187/Screenshot_from_2023-07-29_12-49-36_myqhjg.png',
+        duration: '0:15',
+        uploadTime: '3 Years ago',
+        views: '28M',
+        author: 'T-Series Regional',
+        videoUrl:
+          'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+        description:
+          'Song : Raja Raja Kareja Mein Samaja\nAlbum : Raja Kareja Mein Samaja\nArtist : Radhe Shyam Rasia\nSinger : Radhe Shyam Rasia\nMusic Director : Sohan Lal, Dinesh Kumar\nLyricist : Vinay Bihari, Shailesh Sagar, Parmeshwar Premi\nMusic Label : T-Series',
+        subscriber: '24M',
+        isLive: false,
+      },
+      {
+        id: '7',
+        title: 'For Bigger Escape',
+        thumbnailUrl:
+          'https://img.jakpost.net/c/2019/09/03/2019_09_03_78912_1567484272._large.jpg',
+        duration: '0:15',
+        uploadTime: '3.6 Years ago',
+        views: '21M',
+        author: 'T-Series Regional',
+        videoUrl:
+          'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+        description:
+          " Introducing Chromecast. The easiest way to enjoy online video and music on your TV—for when Batman's escapes aren't quite big enough. For $35. Learn how to use Chromecast with Google Play Movies and more at google.com/chromecast.",
+        subscriber: '26M',
+        isLive: true,
+      },
+      {
+        id: '8',
+        title: 'The first Blender Open Movie from 2006',
+        thumbnailUrl:
+          'https://res.cloudinary.com/duujfpr1f/image/upload/v1690615059/Screenshot_from_2023-07-29_12-34-55_qko0yg.png',
+        duration: '10:53',
+        uploadTime: '4 Years ago',
+        views: '24M',
+        author: 'Blender Inc.',
+        videoUrl:
+          'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+        description:
+          'Song : Raja Raja Kareja Mein Samaja\nAlbum : Raja Kareja Mein Samaja\nArtist : Radhe Shyam Rasia\nSinger : Radhe Shyam Rasia\nMusic Director : Sohan Lal, Dinesh Kumar\nLyricist : Vinay Bihari, Shailesh Sagar, Parmeshwar Premi\nMusic Label : T-Series',
+        subscriber: '25M',
+        isLive: false,
+      },
+    ],
+    activeVideo: [],
+    historyList: [],
+  };
+  return {
+    ...initialState,
+  };
+});
+
+describe('Subscription Screen write test cases', () => {
+  it('Check the Subscription Screen light Background', () => {
+    const {getByTestId} = render(
+      <Provider store={SubscriptionStore1}>
+        <Subscription {...subscriptionScreenProps} />
+      </Provider>,
+    );
+    const subscriptionContainer = getByTestId('SubscriptionScreen');
+    expect(subscriptionContainer.props.style[1].backgroundColor).toBe(
+      '#ffffff',
+    );
+  });
+
+  it('Check the Subscription Screen dark Background', () => {
+    const {getByTestId} = render(
+      <Provider store={SubscriptionStore2}>
+        <Subscription {...subscriptionScreenProps} />
+      </Provider>,
+    );
+    const subscriptionContainer = getByTestId('SubscriptionScreen');
+    expect(subscriptionContainer.props.style[1].backgroundColor).toBe(
+      '#000000cc',
+    );
+  });
+
+  it('displays the correct number of items in FlatList', () => {
+    const subButtonList = [
+      {
+        id: 1,
+        text: 'All',
+      },
+      {
+        id: 2,
+        text: 'Today',
+      },
+      {
+        id: 3,
+        text: 'Continue watching',
+      },
+      {
+        id: 4,
+        text: 'Unwatched',
+      },
+      {
+        id: 5,
+        text: 'Live',
+      },
+      {
+        id: 6,
+        text: 'Post',
+      },
+      {
+        id: 7,
+        text: 'Settings',
+      },
+    ];
+
+    const {getAllByTestId} = render(
+      <Provider store={Store}>
+        <Subscription />
+      </Provider>,
+    );
+
+    const renderedItems = getAllByTestId(/Buttons\d+/);
+    expect(renderedItems).toHaveLength(subButtonList.length);
+  });
+
+  it('Check the buttons change the Category', () => {
+    const {getByTestId} = render(
+      <Provider store={Store}>
+        <Subscription />
+      </Provider>,
+    );
+    const checkButtonFunction = jest.fn();
+    const allButtons = getByTestId('Buttons2');
+    expect(allButtons.props.style.backgroundColor).toBe('#DADADA5a');
+    fireEvent.press(allButtons);
+    expect(allButtons).toBeCalled;
+    expect(allButtons.props.style.backgroundColor).toBe('#000');
+    expect(checkButtonFunction).toBeCalled;
+  });
+
+  it('Check the Video to go Video Player', () => {
+    const {getByTestId} = render(
+      <Provider store={SubscriptionStore1}>
+        <Subscription />
+      </Provider>,
+    );
+    const checkButtonFunction = jest.fn();
+    const subscriptionVideoButton = getByTestId('SubscriptionVideos1');
+    fireEvent.press(subscriptionVideoButton);
+    expect(subscriptionVideoButton).toBeCalled;
+    expect(checkButtonFunction).toBeCalled;
+    expect(subscriptionScreenProps.clickVideo).toHaveBeenCalled;
+    expect(subscriptionScreenProps.navigation.push).toHaveBeenCalled;
+  });
+});

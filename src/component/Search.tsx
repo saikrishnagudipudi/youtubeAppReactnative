@@ -10,11 +10,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {
   widthPercentageToDP as wp,
@@ -47,6 +44,9 @@ class Search extends Component<IProps, IState> {
     this.props.navigation?.push('VideoPlayers');
   };
 
+  getThemeModeRenderColor = () =>
+    this.props.globalState.themeMode ? '#fff' : '#000';
+
   render() {
     const getState = this.props.globalState;
     const {searchInput} = this.state;
@@ -58,6 +58,7 @@ class Search extends Component<IProps, IState> {
     );
     return (
       <View
+      testID='searchScreen'
         style={[
           styles.searchContainer,
           getState.themeMode
@@ -67,36 +68,33 @@ class Search extends Component<IProps, IState> {
         <View style={styles.searchHeaderContainer}>
           <AntDesign
             name="arrowleft"
-            color={getState.themeMode ? '#fff' : '#000'}
+            testID='arrowLeft'
+            color={this.getThemeModeRenderColor()}
             size={hp('4')}
             onPress={this.goBack}
           />
           <View
             style={[
               styles.inputContainer,
-              getState.themeMode
-                ? {borderColor: '#fff'}
-                : {borderColor: '#000'},
+              {borderColor: this.getThemeModeRenderColor()},
             ]}>
             <TextInput
+            testID='searchVideo'
               onChangeText={text => this.onChangeSearch(text)}
               value={searchInput}
-              style={[
-                styles.input,
-                getState.themeMode ? {color: '#fff'} : {color: '#000'},
-              ]}
+              style={[styles.input, {color: this.getThemeModeRenderColor()}]}
               placeholder="Search..."
-              placeholderTextColor={getState.themeMode ? '#fff' : '#000'}
+              placeholderTextColor={this.getThemeModeRenderColor()}
             />
             <AntDesign
               name="search1"
-              color={getState.themeMode ? '#fff' : '#000'}
+              color={this.getThemeModeRenderColor()}
               size={hp('3')}
             />
           </View>
           <MaterialIcons
             name="keyboard-voice"
-            color={getState.themeMode ? '#fff' : '#000'}
+            color={this.getThemeModeRenderColor()}
             size={hp('4')}
           />
         </View>
@@ -106,6 +104,7 @@ class Search extends Component<IProps, IState> {
           renderItem={({item}) => {
             return (
               <TouchableOpacity
+              testID={`SearchVideo${item.id}`}
                 style={styles.searchItemContainer}
                 onPress={() => this.onPlayVideo(item.id)}>
                 <View style={styles.searchItemTitleContainer}>
@@ -118,7 +117,7 @@ class Search extends Component<IProps, IState> {
                     <Text
                       style={[
                         styles.searchTitle,
-                        getState.themeMode ? {color: '#fff'} : {color: '#000'},
+                        {color: this.getThemeModeRenderColor()},
                       ]}>
                       {item.title}
                     </Text>
@@ -135,7 +134,7 @@ class Search extends Component<IProps, IState> {
                 </View>
                 <Entypo
                   name="dots-three-vertical"
-                  color={getState.themeMode ? '#fff' : '#000'}
+                  color={this.getThemeModeRenderColor()}
                   size={hp('3')}
                 />
               </TouchableOpacity>

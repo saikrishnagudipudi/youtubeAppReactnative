@@ -23,6 +23,7 @@ class Landing extends Component<IProps, IState> {
     // console.log(this.props.globalState)
     return (
       <View
+        testID="landingScreenId"
         style={[
           styles.landingScreen,
           this.props.globalState.themeMode

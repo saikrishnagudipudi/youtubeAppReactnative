@@ -35,11 +35,15 @@ class BottomTab extends Component<IProps, IState> {
     this.props.navigation?.push('Search');
   };
 
+  getColorIcons = () => (this.props.globalState.themeMode ? '#fff' : '#000');
+  getHeaderIcons = () =>
+    this.props.globalState.themeMode ? '#ffffff' : '#000000cc';
   render() {
     const getState = this.props.globalState;
     // console.log(this.props.globalState);
     return (
       <View
+        testID="bottomScreenContainer"
         style={[
           styles.homeContainer,
           getState.themeMode
@@ -70,189 +74,173 @@ class BottomTab extends Component<IProps, IState> {
             ]}>
             <MaterialCommunityIcons
               name="cast"
-              color={getState.themeMode ? '#ffffff' : '#000000cc'}
+              color={this.getHeaderIcons()}
               size={hp('3.4')}
             />
             <AntDesign
               name="bells"
-              color={getState.themeMode ? '#ffffff' : '#000000cc'}
+              color={this.getHeaderIcons()}
               size={hp('3.4')}
             />
             <AntDesign
               name="search1"
-              color={getState.themeMode ? '#ffffff' : '#000000cc'}
+              color={this.getHeaderIcons()}
               size={hp('3.4')}
               onPress={this.onSearch}
+              testID="search"
             />
             <FontAwesome
               name="user-circle"
               onPress={this.goProfile}
-              color={getState.themeMode ? '#ffffff' : '#000000cc'}
+              testID="profile"
+              color={this.getHeaderIcons()}
               size={hp('3.4')}
             />
           </View>
         </View>
-        <Tab.Navigator
-          initialRouteName="Home"
-          screenOptions={{
-            tabBarActiveTintColor: '#000000',
-            headerShown: false,
-            tabBarHideOnKeyboard: true,
-            tabBarShowLabel: false,
-            tabBarStyle: {
-              height: hp(10),
-              backgroundColor: 'rgba(196, 196, 196, 0.35)',
-              // position: 'absolute',
-              elevation: 0,
-              width: wp(93),
-              // bottom: hp(1),
-              borderRadius: hp('1.3'),
-            },
-            tabBarLabelStyle: {
-              backgroundColor: 'transparent',
-            },
-          }}>
-          <Tab.Screen
-            name="Home"
-            component={Home}
-            options={{
+        <View style={{flex: 1}} testID="BottomTabBars">
+          <Tab.Navigator
+            initialRouteName="Home"
+            screenOptions={{
+              tabBarActiveTintColor: '#000000',
+              headerShown: false,
+              tabBarHideOnKeyboard: true,
+              tabBarShowLabel: false,
+              tabBarStyle: {
+                height: hp(10),
+                backgroundColor: 'rgba(196, 196, 196, 0.35)',
+                elevation: 0,
+                width: wp(93),
+                borderRadius: hp('1.3'),
+              },
               tabBarLabelStyle: {
                 backgroundColor: 'transparent',
               },
-              tabBarIcon: ({color, focused}) => (
-                <View style={styles.tabBarContainer}>
-                  {focused ? (
-                    <MaterialCommunityIcons
-                      name="home-variant"
-                      color={getState.themeMode ? '#fff' : '#000'}
-                      size={hp('4.2')}
-                    />
-                  ) : (
-                    <Octicons
-                      name="home"
-                      color={getState.themeMode ? '#fff' : '#000'}
-                      size={hp('4.2')}
-                    />
-                  )}
-                  <Text
-                    style={[
-                      styles.labelInActiveStyle,
-                      getState.themeMode ? {color: '#fff'} : {color: '#000'},
-                    ]}>
-                    Home
-                  </Text>
-                </View>
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="Explore"
-            component={Explore}
-            options={{
-              tabBarIcon: ({color, focused}) => (
-                <View style={styles.tabBarContainer}>
-                  {focused ? (
+            }}>
+            <Tab.Screen
+              name="Home"
+              component={Home}
+              options={{
+                tabBarLabelStyle: {
+                  backgroundColor: 'transparent',
+                },
+                tabBarIcon: ({focused}) => (
+                  <View testID="tabButtons" style={styles.tabBarContainer}>
+                    {focused ? (
+                      <MaterialCommunityIcons
+                        name="home-variant"
+                        color={this.getColorIcons()}
+                        size={hp('4.2')}
+                      />
+                    ) : (
+                      <Octicons
+                        name="home"
+                        color={this.getColorIcons()}
+                        size={hp('4.2')}
+                      />
+                    )}
+                    <Text
+                      style={[
+                        styles.labelInActiveStyle,
+                        {color: this.getColorIcons()},
+                      ]}>
+                      Home
+                    </Text>
+                  </View>
+                ),
+              }}
+            />
+            <Tab.Screen
+              name="Explore"
+              component={Explore}
+              options={{
+                tabBarIcon: ({focused}) => (
+                  <View style={styles.tabBarContainer}>
                     <Ionicons
-                      name="compass-sharp"
-                      color={getState.themeMode ? '#fff' : '#000'}
+                      name={focused ? 'compass-sharp' : 'compass-outline'}
+                      color={this.getColorIcons()}
                       size={hp('4.2')}
                     />
-                  ) : (
-                    <Ionicons
-                      name="compass-outline"
-                      color={getState.themeMode ? '#fff' : '#000'}
-                      size={hp('4.2')}
+                    <Text
+                      style={[
+                        styles.labelInActiveStyle,
+                        {color: this.getColorIcons()},
+                      ]}>
+                      Explore
+                    </Text>
+                  </View>
+                ),
+              }}
+            />
+            <Tab.Screen
+              name="Add"
+              component={Add}
+              options={{
+                tabBarIcon: () => (
+                  <View>
+                    <AntDesign
+                      name="pluscircleo"
+                      color={this.getColorIcons()}
+                      size={hp('7')}
                     />
-                  )}
-                  <Text
-                    style={[
-                      styles.labelInActiveStyle,
-                      getState.themeMode ? {color: '#fff'} : {color: '#000'},
-                    ]}>
-                    Explore
-                  </Text>
-                </View>
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="Add"
-            component={Add}
-            options={{
-              tabBarIcon: ({color, size}) => (
-                <View>
-                  <AntDesign
-                    name="pluscircleo"
-                    color={getState.themeMode ? '#fff' : '#000'}
-                    size={hp('7')}
-                  />
-                </View>
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="Subscription"
-            component={Subscription}
-            options={{
-              tabBarIcon: ({color, focused}) => (
-                <View style={styles.tabBarContainer}>
-                  {focused ? (
+                  </View>
+                ),
+              }}
+            />
+            <Tab.Screen
+              name="Subscription"
+              component={Subscription}
+              options={{
+                tabBarIcon: ({focused}) => (
+                  <View style={styles.tabBarContainer}>
                     <MaterialCommunityIcons
-                      name="youtube-subscription"
-                      color={getState.themeMode ? '#fff' : '#000'}
+                      name={
+                        focused
+                          ? 'youtube-subscription'
+                          : 'youtube-subscription'
+                      }
+                      color={this.getColorIcons()}
                       size={hp('4.2')}
                     />
-                  ) : (
+                    <Text
+                      style={[
+                        styles.labelInActiveStyle,
+                        {color: this.getColorIcons(), fontSize: hp('1.4')},
+                      ]}>
+                      Subscription
+                    </Text>
+                  </View>
+                ),
+              }}
+            />
+            <Tab.Screen
+              name="Library"
+              component={Library}
+              options={{
+                tabBarIcon: ({focused}) => (
+                  <View style={styles.tabBarContainer}>
                     <MaterialCommunityIcons
-                      name="youtube-subscription"
-                      color={getState.themeMode ? '#fff' : '#000'}
+                      name={
+                        focused
+                          ? 'play-box-multiple'
+                          : 'play-box-multiple-outline'
+                      }
+                      color={this.getColorIcons()}
                       size={hp('4.2')}
                     />
-                  )}
-                  <Text
-                    style={[
-                      styles.labelInActiveStyle,
-                      getState.themeMode
-                        ? {color: '#fff', fontSize: hp('1.4')}
-                        : {color: '#000', fontSize: hp('1.4')},
-                    ]}>
-                    Subscription
-                  </Text>
-                </View>
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="Library"
-            component={Library}
-            options={{
-              tabBarIcon: ({color, focused}) => (
-                <View style={styles.tabBarContainer}>
-                  {focused ? (
-                    <MaterialCommunityIcons
-                      name="play-box-multiple"
-                      color={getState.themeMode ? '#fff' : '#000'}
-                      size={hp('4.2')}
-                    />
-                  ) : (
-                    <MaterialCommunityIcons
-                      name="play-box-multiple-outline"
-                      color={getState.themeMode ? '#fff' : '#000'}
-                      size={hp('4.2')}
-                    />
-                  )}
-                  <Text
-                    style={[
-                      styles.labelInActiveStyle,
-                      getState.themeMode ? {color: '#fff'} : {color: '#000'},
-                    ]}>
-                    Library
-                  </Text>
-                </View>
-              ),
-            }}
-          />
-        </Tab.Navigator>
+                    <Text
+                      style={[
+                        styles.labelInActiveStyle,
+                        {color: this.getColorIcons()},
+                      ]}>
+                      Library
+                    </Text>
+                  </View>
+                ),
+              }}
+            />
+          </Tab.Navigator>
+        </View>
       </View>
     );
   }
