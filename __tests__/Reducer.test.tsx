@@ -1,5 +1,6 @@
 import {act} from 'react-test-renderer';
 import Reducer from '../src/component/Reducer';
+
 const ReducerState = {
   themeMode: false,
   videoList: [

@@ -19,13 +19,9 @@ jest.mock('@react-native-community/slider', () => (props: Object) => {
   return <MockView testID="slider" {...props} />;
 });
 
-jest.spyOn(React, 'createRef').mockImplementation((() => {
-  return {
-    current: {
-      seek: jest.fn(),
-    },
-  };
-}) as any);
+jest.spyOn(React, "createRef").mockImplementation((() => ({
+  seek: jest.fn()
+})) as any)
 
 const VideoPlayerProps = {
   globalState: {themeMode: false},
@@ -166,7 +162,24 @@ const VideoPlayerStore1 = createStore(() => {
         isLive: false,
       },
     ],
-    activeVideo: [],
+    activeVideo: [
+      {
+        id: '1',
+        title: 'Big Buck Bunny',
+        thumbnailUrl:
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Big_Buck_Bunny_thumbnail_vlc.png/1200px-Big_Buck_Bunny_thumbnail_vlc.png',
+        duration: '0:00',
+        uploadTime: '4 Years ago',
+        views: '24M',
+        author: 'Vlc Media Player',
+        videoUrl:
+          'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+        description:
+          "Big Buck Bunny tells the story of a giant rabbit with a heart bigger than himself. When one sunny day three rodents rudely harass him, something snaps... and the rabbit ain't no bunny anymore! In the typical cartoon tradition he prepares the nasty rodents a comical revenge.\n\nLicensed under the Creative Commons Attribution license\nhttp://www.bigbuckbunny.org",
+        subscriber: '25M',
+        isLive: true,
+      },
+    ],
     historyList: [],
   };
   return initialState;
@@ -350,6 +363,22 @@ const VideoPlayerStore2 = createStore(() => {
     ...initialState,
   };
 });
+
+// const videoPlayerLocalState1 = {
+//   videoPlayPause: false,
+//   videoDuration: 256,
+//   videoDurationValue: 12,
+//   videoDurationSeconds: 0,
+//   videoDurationMinutes: 0,
+//   moreText: false,
+//   controlVisible: true,
+//   volumeValue: 1,
+//   visibleVolumeSlider: false,
+//   previousVideoId: '0',
+//   previousVideoIconDisable: false,
+//   currentVideoList: [],
+// };
+
 beforeEach(() => {
   globalThis.setInterval = jest.fn().mockImplementation(((
     callback: Function,
@@ -379,8 +408,12 @@ describe('VideoPlayer Screen test Cases', () => {
         <VideoPlayers />
       </Provider>,
     );
-    expect(setTimeout).toHaveBeenCalled;
-    expect(setInterval).toHaveBeenCalled;
+
+    jest.useFakeTimers();
+    jest.spyOn(global, 'setInterval');
+    act(() => {
+      jest.advanceTimersByTime(60000);
+    });
   });
 
   it('Video Player', () => {
@@ -612,7 +645,7 @@ describe('VideoPlayer Screen test Cases', () => {
     expect(VideoPlayerProps.getHistoryVideo).toBeCalled;
   });
   it('Play Previous Video', () => {
-    const previousVideoIconDisable = false; 
+    const previousVideoIconDisable = false;
     const playPreviousVideo = jest.fn();
     const {getByTestId} = render(
       <Provider store={VideoPlayerStore2}>
@@ -622,9 +655,8 @@ describe('VideoPlayer Screen test Cases', () => {
     const playNextVideo = getByTestId('forwardToNextPlay');
     // console.log(playPrevious.props.children)
     act(() => {
-
       fireEvent.press(playNextVideo);
-    })
+    });
     const playPrevious = getByTestId('playPrevious');
     // console.log(playPrevious.props.children)
     fireEvent.press(playPrevious);
@@ -632,5 +664,4 @@ describe('VideoPlayer Screen test Cases', () => {
     expect(playPreviousVideo).toBeCalled;
     expect(VideoPlayerProps.getHistoryVideo).toBeCalled;
   });
-   
 });
