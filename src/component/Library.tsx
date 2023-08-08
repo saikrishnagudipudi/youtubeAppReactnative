@@ -34,12 +34,15 @@ class Library extends Component<IProps, IState> {
     this.props.navigation?.push('VideoPlayers');
   };
 
+  onTextColorChangeThemeMode = () =>
+    this.props.globalState.themeMode ? '#fff' : '#000';
+  videoTextChangeThemeMode = () =>
+    this.props.globalState.themeMode ? '#fff' : '#030303';
   render() {
     const getState = this.props.globalState;
-    // console.log(getState.historyList);
-    // console.log(getState.historyList[0].videoDuration);
     return (
       <View
+        testID="libraryScreen"
         style={[
           styles.libraryContainer,
           getState.themeMode
@@ -49,7 +52,7 @@ class Library extends Component<IProps, IState> {
         <Text
           style={[
             styles.reactText,
-            getState.themeMode ? {color: '#fff'} : {color: '#000'},
+            {color: this.onTextColorChangeThemeMode()},
           ]}>
           Recent
         </Text>
@@ -59,11 +62,11 @@ class Library extends Component<IProps, IState> {
             showsHorizontalScrollIndicator={false}
             style={styles.videoListContainer}
             horizontal
-            // inverted
             keyExtractor={item => item.id}
             renderItem={({item}) => {
               return (
                 <TouchableOpacity
+                  testID={`history${item.id}`}
                   onPress={() => this.playHistoryVideo(item.id)}
                   style={styles.videoPageContainer}>
                   <ImageBackground
@@ -86,27 +89,23 @@ class Library extends Component<IProps, IState> {
                       maximumTrackTintColor="#fff"
                       minimumTrackTintColor="#900"
                       value={item.seeks}
-                      // onValueChange={value => this.onChangeVolume(value)}
                     />
                   </View>
                   <View style={styles.thumbTitleVideoContainer}>
                     <View style={styles.thumbTitleContainer}>
                       <View style={styles.thumbTitleTextContainer}>
                         <Text
+                          testID={`VideoTittleId${item.id}`}
                           style={[
                             styles.thumbVideoTittle,
-                            getState.themeMode
-                              ? {color: '#fff'}
-                              : {color: '#030303'},
+                            {color: this.videoTextChangeThemeMode()},
                           ]}>
                           {item.title}
                         </Text>
                         <Text
                           style={[
                             styles.thumbViewsText,
-                            getState.themeMode
-                              ? {color: '#fff'}
-                              : {color: '#030303'},
+                            {color: this.videoTextChangeThemeMode()},
                           ]}>
                           {item.views} Views, {item.uploadTime}
                         </Text>
@@ -114,7 +113,7 @@ class Library extends Component<IProps, IState> {
                     </View>
                     <Entypo
                       name="dots-three-vertical"
-                      color={getState.themeMode ? '#fff' : '#000'}
+                      color={this.onTextColorChangeThemeMode()}
                       size={hp('3')}
                     />
                   </View>
@@ -129,12 +128,12 @@ class Library extends Component<IProps, IState> {
             <MaterialCommunityIcons
               name="history"
               size={hp('3.5')}
-              color={getState.themeMode ? '#fff' : '#000'}
+              color={this.onTextColorChangeThemeMode()}
             />
             <Text
               style={[
                 styles.historyText,
-                getState.themeMode ? {color: '#fff'} : {color: '#000'},
+                {color: this.onTextColorChangeThemeMode()},
               ]}>
               History
             </Text>
@@ -143,12 +142,12 @@ class Library extends Component<IProps, IState> {
             <Foundation
               name="play-video"
               size={hp('3.5')}
-              color={getState.themeMode ? '#fff' : '#000'}
+              color={this.onTextColorChangeThemeMode()}
             />
             <Text
               style={[
                 styles.historyText,
-                getState.themeMode ? {color: '#fff'} : {color: '#000'},
+                {color: this.onTextColorChangeThemeMode()},
               ]}>
               Your Videos
             </Text>
@@ -159,13 +158,13 @@ class Library extends Component<IProps, IState> {
             <Octicons
               name="download"
               size={hp('3.5')}
-              color={getState.themeMode ? '#fff' : '#000'}
+              color={this.onTextColorChangeThemeMode()}
             />
             <View>
               <Text
                 style={[
                   styles.historyText,
-                  getState.themeMode ? {color: '#fff'} : {color: '#000'},
+                  {color: this.onTextColorChangeThemeMode()},
                 ]}>
                 Downloads
               </Text>
@@ -176,12 +175,12 @@ class Library extends Component<IProps, IState> {
             <MaterialIcons
               name="local-movies"
               size={hp('3.5')}
-              color={getState.themeMode ? '#fff' : '#000'}
+              color={this.onTextColorChangeThemeMode()}
             />
             <Text
               style={[
                 styles.historyText,
-                getState.themeMode ? {color: '#fff'} : {color: '#000'},
+                {color: this.onTextColorChangeThemeMode()},
               ]}>
               Your Movies
             </Text>
@@ -192,13 +191,13 @@ class Library extends Component<IProps, IState> {
             <MaterialCommunityIcons
               name="clock-time-four-outline"
               size={hp('3')}
-              color={getState.themeMode ? '#fff' : '#000'}
+              color={this.onTextColorChangeThemeMode()}
             />
             <View>
               <Text
                 style={[
                   styles.historyText,
-                  getState.themeMode ? {color: '#fff'} : {color: '#000'},
+                  {color: this.onTextColorChangeThemeMode()},
                 ]}>
                 Watch later
               </Text>
@@ -211,13 +210,13 @@ class Library extends Component<IProps, IState> {
             <AntDesign
               name="like2"
               size={hp('3.5')}
-              color={getState.themeMode ? '#fff' : '#000'}
+              color={this.onTextColorChangeThemeMode()}
             />
             <View>
               <Text
                 style={[
                   styles.historyText,
-                  getState.themeMode ? {color: '#fff'} : {color: '#000'},
+                  {color: this.onTextColorChangeThemeMode()},
                 ]}>
                 Liked videos
               </Text>
@@ -229,20 +228,17 @@ class Library extends Component<IProps, IState> {
           <Text
             style={[
               styles.playListText,
-              getState.themeMode ? {color: '#fff'} : {color: '#000'},
+              {color: this.onTextColorChangeThemeMode()},
             ]}>
             Playlists
           </Text>
           <Text
-            style={[
-              styles.azText,
-              getState.themeMode ? {color: '#fff'} : {color: '#000'},
-            ]}>
+            style={[styles.azText, {color: this.onTextColorChangeThemeMode()}]}>
             A-Z{' '}
             <AntDesign
               name="down"
               size={hp('2')}
-              color={getState.themeMode ? '#fff' : '#000'}
+              color={this.onTextColorChangeThemeMode()}
             />{' '}
           </Text>
         </View>

@@ -20,10 +20,17 @@ class Profile extends Component<IProps, IState> {
   goHome = () => {
     this.props.navigation?.goBack();
   };
+
+  profileChangeColor = () =>
+    this.props.globalState.themeMode ? '#fff' : '#000';
+  profileChangeIconColor = () =>
+    this.props.globalState.themeMode ? '#ffffff' : '#000000cc';
+
   render() {
     const getState = this.props.globalState;
     return (
       <View
+        testID='profileScreen'
         style={[
           styles.profileContainer,
           getState.themeMode
@@ -33,9 +40,10 @@ class Profile extends Component<IProps, IState> {
         <View>
           <View style={styles.accountHeaderContainer}>
             <AntDesign
+            testID='leftIcon'
               onPress={this.goHome}
               name="left"
-              color={getState.themeMode ? '#fff' : '#000'}
+              color={this.profileChangeColor()}
               size={hp('3')}
             />
             <View style={styles.accountTextContainer}>
@@ -45,26 +53,26 @@ class Profile extends Component<IProps, IState> {
           <View style={styles.accountHeaderContainer}>
             <FontAwesome
               name="user-circle"
-              color={getState.themeMode ? '#ffffff' : '#000000cc'}
+              color={this.profileChangeIconColor()}
               size={hp('6')}
             />
             <View style={{marginLeft: wp('3')}}>
               <Text
                 style={[
                   styles.accountName,
-                  getState.themeMode ? {color: '#fff'} : {color: '#000'},
+                  {color: this.profileChangeColor()},
                 ]}>
                 Sai Krishna Gudipudi{' '}
                 <AntDesign
                   name="down"
-                  color={getState.themeMode ? '#fff' : '#000'}
+                  color={this.profileChangeColor()}
                   size={hp('2')}
                 />
               </Text>
               <Text
                 style={[
                   styles.accountName,
-                  getState.themeMode ? {color: '#fff'} : {color: '#000'},
+                  {color: this.profileChangeColor()},
                 ]}>
                 saikrishna.gudipudi@extwebtech.in
               </Text>
@@ -74,13 +82,13 @@ class Profile extends Component<IProps, IState> {
           <View style={styles.accountHeaderContainer}>
             <MaterialCommunityIcons
               name="account-box-outline"
-              color={getState.themeMode ? '#ffffff' : '#000000cc'}
+              color={this.profileChangeIconColor()}
               size={hp('4')}
             />
             <Text
               style={[
                 styles.yourChannelText,
-                getState.themeMode ? {color: '#fff'} : {color: '#000'},
+                {color: this.profileChangeColor()},
               ]}>
               Your Channel
             </Text>
@@ -88,7 +96,7 @@ class Profile extends Component<IProps, IState> {
           <View style={styles.youtubeStudioContainer}>
             <View style={styles.youtubeStudioTextContainer}>
               <Image
-                tintColor={getState.themeMode ? '#fff' : '#000'}
+                tintColor={this.profileChangeColor()}
                 source={require('./assets/settings.png')}
                 resizeMode="stretch"
                 style={styles.youtubeSettingImage}
@@ -96,27 +104,27 @@ class Profile extends Component<IProps, IState> {
               <Text
                 style={[
                   styles.yourChannelText,
-                  getState.themeMode ? {color: '#fff'} : {color: '#000'},
+                  {color: this.profileChangeColor()},
                 ]}>
                 YouTube Studio
               </Text>
             </View>
             <Feather
               name="external-link"
-              color={getState.themeMode ? '#ffffff' : '#000000cc'}
+              color={this.profileChangeIconColor()}
               size={hp('3.5')}
             />
           </View>
           <View style={styles.accountHeaderContainer}>
             <MaterialIcons
               name="bar-chart"
-              color={getState.themeMode ? '#ffffff' : '#000000cc'}
+              color={this.profileChangeIconColor()}
               size={hp('4')}
             />
             <Text
               style={[
                 styles.yourChannelText,
-                getState.themeMode ? {color: '#fff'} : {color: '#000'},
+                {color: this.profileChangeColor()},
               ]}>
               Time watched
             </Text>
@@ -124,13 +132,13 @@ class Profile extends Component<IProps, IState> {
           <View style={styles.accountHeaderContainer}>
             <Feather
               name="youtube"
-              color={getState.themeMode ? '#ffffff' : '#000000cc'}
+              color={this.profileChangeIconColor()}
               size={hp('4')}
             />
             <Text
               style={[
                 styles.yourChannelText,
-                getState.themeMode ? {color: '#fff'} : {color: '#000'},
+                {color: this.profileChangeColor()},
               ]}>
               Get YouTube Premium
             </Text>
@@ -138,13 +146,13 @@ class Profile extends Component<IProps, IState> {
           <View style={styles.accountHeaderContainer}>
             <FontAwesome
               name="dollar"
-              color={getState.themeMode ? '#ffffff' : '#000000cc'}
+              color={this.profileChangeIconColor()}
               size={hp('3')}
             />
             <Text
               style={[
                 styles.yourChannelText,
-                getState.themeMode ? {color: '#fff'} : {color: '#000'},
+                {color: this.profileChangeColor()},
               ]}>
               Purchases and memberships
             </Text>
@@ -152,13 +160,13 @@ class Profile extends Component<IProps, IState> {
           <View style={styles.accountHeaderContainer}>
             <MaterialCommunityIcons
               name="account-box-multiple-outline"
-              color={getState.themeMode ? '#ffffff' : '#000000cc'}
+              color={this.profileChangeIconColor()}
               size={hp('4')}
             />
             <Text
               style={[
                 styles.yourChannelText,
-                getState.themeMode ? {color: '#fff'} : {color: '#000'},
+                {color: this.profileChangeColor()},
               ]}>
               Switch account
             </Text>
@@ -166,13 +174,13 @@ class Profile extends Component<IProps, IState> {
           <View style={styles.accountHeaderContainer}>
             <MaterialCommunityIcons
               name="incognito"
-              color={getState.themeMode ? '#ffffff' : '#000000cc'}
+              color={this.profileChangeIconColor()}
               size={hp('4')}
             />
             <Text
               style={[
                 styles.yourChannelText,
-                getState.themeMode ? {color: '#fff'} : {color: '#000'},
+                {color: this.profileChangeColor()},
               ]}>
               Turn on Incognito
             </Text>
@@ -180,13 +188,13 @@ class Profile extends Component<IProps, IState> {
           <View style={styles.accountHeaderContainer}>
             <MaterialCommunityIcons
               name="shield-account-outline"
-              color={getState.themeMode ? '#ffffff' : '#000000cc'}
+              color={this.profileChangeIconColor()}
               size={hp('4')}
             />
             <Text
               style={[
                 styles.yourChannelText,
-                getState.themeMode ? {color: '#fff'} : {color: '#000'},
+                {color: this.profileChangeColor()},
               ]}>
               Your data in YouTube
             </Text>
@@ -194,13 +202,13 @@ class Profile extends Component<IProps, IState> {
           <View style={styles.accountHeaderContainer}>
             <Feather
               name="settings"
-              color={getState.themeMode ? '#ffffff' : '#000000cc'}
+              color={this.profileChangeIconColor()}
               size={hp('4')}
             />
             <Text
               style={[
                 styles.yourChannelText,
-                getState.themeMode ? {color: '#fff'} : {color: '#000'},
+                {color: this.profileChangeColor()},
               ]}>
               Settings
             </Text>
@@ -208,24 +216,20 @@ class Profile extends Component<IProps, IState> {
           <View style={styles.accountHeaderContainer}>
             <AntDesign
               name="questioncircleo"
-              color={getState.themeMode ? '#ffffff' : '#000000cc'}
+              color={this.profileChangeIconColor()}
               size={hp('4')}
             />
             <Text
               style={[
                 styles.yourChannelText,
-                getState.themeMode ? {color: '#fff'} : {color: '#000'},
+                {color: this.profileChangeColor()},
               ]}>
               Help and feedback
             </Text>
           </View>
         </View>
         <View style={styles.termsContainer}>
-          <Text
-            style={[
-              styles.termsText,
-              getState.themeMode ? {color: '#fff'} : {color: '#000'},
-            ]}>
+          <Text style={[styles.termsText, {color: this.profileChangeColor()}]}>
             Privacy Policy Terms of Services
           </Text>
         </View>

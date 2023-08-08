@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {Children, Component} from 'react';
+import React, {Component} from 'react';
 import Video from 'react-native-video';
 import {
   widthPercentageToDP as wp,
@@ -72,7 +72,7 @@ class VideoPlayers extends Component<IProps, IState> {
   playVideo = async () => {
     const {videoDurationValue} = this.state;
     this.setState({videoPlayPause: false});
-    this.player.seek(videoDurationValue);
+    this.player.current.seek(videoDurationValue);
     await this.timeConvert(videoDurationValue);
     await this.checkTime();
   };
@@ -87,7 +87,7 @@ class VideoPlayers extends Component<IProps, IState> {
   };
 
   onDurationChange = async (value: number) => {
-    await this.player.seek(value);
+    await this.player.current.seek(value);
     this.setState({videoDurationValue: value});
     await this.timeConvert(value);
   };
@@ -138,55 +138,60 @@ class VideoPlayers extends Component<IProps, IState> {
       this.visibleControls();
     }, 9000);
     const {videoDurationValue} = this.state;
-    console.log('com', videoDurationValue);
-    this.player.seek(videoDurationValue);
+
+    this.player?.current.seek(videoDurationValue);
     // this.setState({visibleVolumeSlider: false});
   };
 
   getData = async () => {
     const getState = this.props.globalState;
-    const getVideo = getState.activeVideo[0];
-    if (getVideo.seeks === undefined) {
-      const getVideoDetails = this.props.globalState.activeVideo[0];
-      const durationSplit = getVideoDetails.duration.split(':');
-      const durationSeconds =
-        parseInt(durationSplit[0]) * 60 + parseInt(durationSplit[1]);
-      this.setState({
-        videoDuration: durationSeconds,
-        videoDurationMinutes: 0,
-        videoDurationSeconds: 0,
-      });
+    const getVideo = getState?.activeVideo[0];
+    if (getVideo?.seeks === undefined) {
+      const getVideoDetails = this.props.globalState?.activeVideo[0];
+      const durationSplit = getVideoDetails?.duration?.split(':');
+      if (durationSplit?.length > 1) {
+        const durationSeconds =
+          parseInt(durationSplit[0]) * 60 + parseInt(durationSplit[1]);
+        this.setState({
+          videoDuration: durationSeconds,
+          videoDurationMinutes: 0,
+          videoDurationSeconds: 0,
+        });
+      }
     } else {
       const getVideoDetails = this.props.globalState.activeVideo[0];
-      const durationSplit = getVideoDetails.duration.split(':');
-      const durationSeconds =
-        parseInt(durationSplit[0]) * 60 + parseInt(durationSplit[1]);
-      const minutes = Math.floor(getVideo.seeks / 60);
-      const seconds = Math.trunc(getVideo.seeks - minutes * 60);
-      await this.setState({
-        videoDuration: durationSeconds,
-        videoDurationMinutes: minutes,
-        videoDurationSeconds: seconds,
-        videoDurationValue: getVideo.seeks,
-      });
+      const durationSplit = getVideoDetails?.duration?.split(':');
+      if (durationSplit?.length > 1) {
+        const durationSeconds =
+          parseInt(durationSplit[0]) * 60 + parseInt(durationSplit[1]);
+        const minutes = Math.floor(getVideo?.seeks / 60);
+        const seconds = Math.trunc(getVideo?.seeks - minutes * 60);
+        await this.setState({
+          videoDuration: durationSeconds,
+          videoDurationMinutes: minutes,
+          videoDurationSeconds: seconds,
+          videoDurationValue: getVideo?.seeks,
+        });
+      }
     }
   };
 
   componentDidMount = async () => {
     const getState = this.props.globalState;
-    const getVideo = getState.activeVideo[0];
+    const getVideo = getState?.activeVideo[0];
     await this.getData();
     await this.checkTime();
-    const filterVideosList = getState.videoList.filter(
-      (each: {id: string}) => each.id !== getVideo.id,
+
+    const filterVideosList = getState?.videoList.filter(
+      (each: {id: string}) => each.id !== getVideo?.id,
     );
     const shuffleList = filterVideosList
-      .map((a: any) => ({sort: Math.random(), value: a}))
+      ?.map((a: any) => ({sort: Math.random(), value: a}))
       .sort((a: any, b: any) => a.sort - b.sort)
       .map((a: any) => a.value);
 
     this.setState({
-      previousVideoId: getVideo.id,
+      previousVideoId: getVideo?.id,
       currentVideoList: shuffleList,
     });
   };
@@ -196,7 +201,7 @@ class VideoPlayers extends Component<IProps, IState> {
     const getState = this.props.globalState;
     const getVideo = getState.activeVideo[0];
     const historyData = {
-      id: getVideo.id,
+      id: getVideo?.id,
       videoDuration: videoDuration,
       seeks: videoDurationValue,
     };
@@ -228,7 +233,7 @@ class VideoPlayers extends Component<IProps, IState> {
         videoDurationMinutes: minutes,
         videoDurationSeconds: seconds,
       }));
-      await this.player.seek(videoDurationValue + 10);
+      await this.player.current.seek(videoDurationValue + 10);
     } else {
       // const newDuration = videoDurationValue + 10;
       const minutes = Math.floor(videoDuration / 60);
@@ -238,7 +243,7 @@ class VideoPlayers extends Component<IProps, IState> {
         videoDurationMinutes: minutes,
         videoDurationSeconds: seconds,
       }));
-      await this.player.seek(videoDuration);
+      await this.player.current.seek(videoDuration);
     }
   };
 
@@ -250,7 +255,7 @@ class VideoPlayers extends Component<IProps, IState> {
         videoDurationMinutes: 0,
         videoDurationSeconds: 0,
       });
-      await this.player.seek(0);
+      await this.player.current.seek(0);
     } else {
       const newDuration = videoDurationValue - 10;
       const minutes = Math.floor(newDuration / 60);
@@ -260,7 +265,7 @@ class VideoPlayers extends Component<IProps, IState> {
         videoDurationMinutes: minutes,
         videoDurationSeconds: seconds,
       }));
-      await this.player.seek(videoDurationValue - 10);
+      await this.player.current.seek(videoDurationValue - 10);
     }
   };
 
@@ -269,10 +274,10 @@ class VideoPlayers extends Component<IProps, IState> {
     const getState = this.props.globalState;
     const getVideo = getState.activeVideo[0];
     const filterVideosList = getState.videoList.filter(
-      (each: {id: string}) => each.id !== getVideo.id,
+      (each: {id: string}) => each.id !== getVideo?.id,
     );
     const historyData = {
-      id: getVideo.id,
+      id: getVideo?.id,
       videoDuration: videoDuration,
       seeks: videoDurationValue,
     };
@@ -293,7 +298,7 @@ class VideoPlayers extends Component<IProps, IState> {
       previousVideoIconDisable: false,
       currentVideoList: shuffleList,
     });
-    await this.player.seek(0);
+    await this.player.current.seek(0);
     await this.clearTimer();
     await this.getData();
     await this.playVideo();
@@ -302,16 +307,16 @@ class VideoPlayers extends Component<IProps, IState> {
   playPreviousVideo = async () => {
     const {videoDurationValue, videoDuration, previousVideoId} = this.state;
     const getState = this.props.globalState;
-    const getVideo = getState.activeVideo[0];
+    const getVideo = getState?.activeVideo[0];
     const historyData = {
-      id: getVideo.id,
+      id: getVideo?.id,
       videoDuration: videoDuration,
       seeks: videoDurationValue,
     };
     await this.props.getHistoryVideo(historyData);
 
     const filterVideosList = getState.videoList.filter(
-      (each: {id: string}) => each.id !== getVideo.id,
+      (each: {id: string}) => each.id !== getVideo?.id,
     );
     const shuffleList = filterVideosList
       .map((a: any) => ({sort: Math.random(), value: a}))
@@ -328,25 +333,30 @@ class VideoPlayers extends Component<IProps, IState> {
       previousVideoIconDisable: false,
       currentVideoList: shuffleList,
     });
-    await this.player.seek(0);
+    await this.player.current.seek(0);
     await this.clearTimer();
     await this.getData();
     await this.playVideo();
   };
-
+  static getDerivedStateFromProps(nextProps: IProps, prevState: IState) {
+    prevState.currentVideoList = nextProps.globalState.videoList;
+    return {
+      prevState,
+    };
+  }
   onClickPlayVideo = async (id: string) => {
     const {videoDurationValue, videoDuration} = this.state;
     const getState = this.props.globalState;
-    const getVideo = getState.activeVideo[0];
+    const getVideo = getState?.activeVideo[0];
     const historyData = {
-      id: getVideo.id,
+      id: getVideo?.id,
       videoDuration: videoDuration,
       seeks: videoDurationValue,
     };
     await this.props.getHistoryVideo(historyData);
 
     const filterVideosList = getState.videoList.filter(
-      (each: {id: string}) => each.id !== getVideo.id,
+      (each: {id: string}) => each.id !== getVideo?.id,
     );
     const shuffleList = filterVideosList
       .map((a: any) => ({sort: Math.random(), value: a}))
@@ -363,16 +373,19 @@ class VideoPlayers extends Component<IProps, IState> {
       previousVideoIconDisable: false,
       currentVideoList: shuffleList,
     });
-    await this.player.seek(0);
+    await this.player.current.seek(0);
     await this.clearTimer();
     await this.getData();
 
     await this.playVideo();
   };
 
+  getThemeModeColorChange = () =>
+    this.props.globalState?.themeMode ? '#fff' : '#030303';
+
   render() {
     const getState = this.props.globalState;
-    const getVideo = getState.activeVideo[0];
+    const getVideo = getState?.activeVideo[0];
     const {
       videoPlayPause,
       videoDuration,
@@ -386,19 +399,23 @@ class VideoPlayers extends Component<IProps, IState> {
       previousVideoIconDisable,
       currentVideoList,
     } = this.state;
-    // console.log('ren', videoDurationValue);
+    // console.log('ren', videoDuration);
     return (
       <View
+        testID="VideoScreen"
         style={[
           styles.videoContainer,
-          getState.themeMode
+          getState?.themeMode
             ? {backgroundColor: '#000000cc'}
             : {backgroundColor: '#ffffff'},
         ]}>
-        <TouchableOpacity onPress={this.onClickVisibleControl}>
+        <TouchableOpacity
+          testID="VideoPlayer"
+          onPress={this.onClickVisibleControl}>
           <Video
+            testID="videoPlay"
             source={{
-              uri: getVideo.videoUrl,
+              uri: getVideo?.videoUrl,
             }}
             ref={ref => {
               this.player = ref;
@@ -413,18 +430,17 @@ class VideoPlayers extends Component<IProps, IState> {
         </TouchableOpacity>
         {controlVisible && (
           <>
-            <View style={styles.videoHeaderContainer}>
-              <AntDesign
-                onPress={this.goHome}
-                name="down"
-                color={'#fff'}
-                size={hp('3')}
-              />
-            </View>
+            <TouchableOpacity
+              testID="DownIconId"
+              onPress={this.goHome}
+              style={styles.videoHeaderContainer}>
+              <AntDesign name="down" color={'#fff'} size={hp('3')} />
+            </TouchableOpacity>
             <View style={styles.videoControlsContainer}>
               <View style={styles.videoControlIconsContainer}>
                 <TouchableOpacity
                   onPress={this.backPlay}
+                  testID="back10SecondPlay"
                   style={styles.iconBackgroundContainer}>
                   <MaterialIcons
                     name="replay-10"
@@ -434,7 +450,8 @@ class VideoPlayers extends Component<IProps, IState> {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.iconBackgroundContainer}
-                  disabled={previousVideoIconDisable}
+                  // disabled={previousVideoIconDisable}
+                  testID="playPrevious"
                   onPress={this.playPreviousVideo}>
                   <AntDesign
                     name="stepbackward"
@@ -443,6 +460,7 @@ class VideoPlayers extends Component<IProps, IState> {
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
+                  testID="VideoPlayControl"
                   onPress={videoPlayPause ? this.playVideo : this.pauseVideo}
                   style={styles.iconBackgroundContainer}>
                   <AntDesign
@@ -453,12 +471,14 @@ class VideoPlayers extends Component<IProps, IState> {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.iconBackgroundContainer}
+                  testID="forwardToNextPlay"
                   onPress={this.forwardToNextVideo}>
                   <AntDesign name="stepforward" color={'#fff'} size={hp('3')} />
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.iconBackgroundContainer}
-                  onPress={this.forwardPlay}>
+                  onPress={this.forwardPlay}
+                  testID="forward10Seconds">
                   <MaterialIcons
                     name="forward-10"
                     color={'#fff'}
@@ -469,54 +489,54 @@ class VideoPlayers extends Component<IProps, IState> {
             </View>
             <View style={styles.sliderContainer}>
               <View style={styles.timeContainer}>
-                <Text style={styles.time}>
-                  {videoDurationMinutes < 10
-                    ? `0${videoDurationMinutes}`
-                    : videoDurationMinutes}{' '}
-                  :{' '}
-                  {videoDurationSeconds < 10
-                    ? `0${videoDurationSeconds}`
-                    : videoDurationSeconds}
-                  / {getVideo.duration}
+                <Text testID="videoDurationTimeText" style={styles.time}>
+                  {`${videoDurationMinutes}:${videoDurationSeconds}/`}
+                  {getVideo?.duration}
                 </Text>
                 <View style={styles.volumeContainer}>
                   <FontAwesome
+                    testID="volumeIcon"
                     name="volume-up"
                     color={'#fff'}
                     size={hp('3')}
                     onPress={this.clickVolume}
                   />
                   {visibleVolumeSlider && (
-                    <Slider
-                      style={styles.volumeSlider}
-                      thumbTintColor="#ffffff"
-                      minimumValue={0}
-                      maximumValue={1}
-                      maximumTrackTintColor="#fff"
-                      minimumTrackTintColor="#fff"
-                      value={volumeValue}
-                      onValueChange={value => this.onChangeVolume(value)}
-                    />
+                    <View testID="VolumeSlider">
+                      <Slider
+                        style={styles.volumeSlider}
+                        thumbTintColor="#ffffff"
+                        minimumValue={0}
+                        maximumValue={1}
+                        maximumTrackTintColor="#fff"
+                        minimumTrackTintColor="#fff"
+                        value={volumeValue}
+                        onValueChange={value => this.onChangeVolume(value)}
+                      />
+                    </View>
                   )}
                 </View>
               </View>
-              <Slider
-                style={styles.slider}
-                thumbTintColor="#900"
-                minimumValue={0}
-                maximumValue={videoDuration}
-                maximumTrackTintColor="#fff"
-                minimumTrackTintColor="#900"
-                value={videoDurationValue}
-                onValueChange={value => this.onDurationChange(value)}
-              />
+
+              <View testID="VideoSlider">
+                <Slider
+                  style={styles.slider}
+                  thumbTintColor="#900"
+                  minimumValue={0}
+                  maximumValue={videoDuration}
+                  maximumTrackTintColor="#fff"
+                  minimumTrackTintColor="#900"
+                  value={videoDurationValue}
+                  onValueChange={value => this.onDurationChange(value)}
+                />
+              </View>
             </View>
           </>
         )}
         <View style={styles.titleVideoContainer}>
           <View style={styles.titleContainer}>
             <Image
-              source={{uri: getVideo.thumbnailUrl}}
+              source={{uri: getVideo?.thumbnailUrl}}
               resizeMode="stretch"
               style={styles.thumbnailImage}
             />
@@ -524,25 +544,25 @@ class VideoPlayers extends Component<IProps, IState> {
               <Text
                 style={[
                   styles.videoTittle,
-                  getState.themeMode ? {color: '#fff'} : {color: '#030303'},
+                  {color: this.getThemeModeColorChange()},
                 ]}>
-                {getVideo.title}
+                {getVideo?.title}
               </Text>
               <Text
                 style={[
                   styles.viewsText,
-                  getState.themeMode ? {color: '#fff'} : {color: '#030303'},
+                  {color: this.getThemeModeColorChange()},
                 ]}>
-                {getVideo.views} Views, {getVideo.uploadTime}, ...
-                <Text onPress={this.checkMore}>
-                  {moreText ? 'Hide' : 'more'}
+                {getVideo?.views} Views, {getVideo?.uploadTime}, ...
+                <Text testID="TextHide" onPress={this.checkMore}>
+                  {moreText ? 'Hide' : 'More'}
                 </Text>
               </Text>
             </View>
           </View>
           <Entypo
             name="dots-three-vertical"
-            color={getState.themeMode ? '#fff' : '#000'}
+            color={getState?.themeMode ? '#fff' : '#000'}
             size={hp('3')}
           />
         </View>
@@ -550,9 +570,9 @@ class VideoPlayers extends Component<IProps, IState> {
           <Text
             style={[
               styles.description,
-              getState.themeMode ? {color: '#fff'} : {color: '#030303'},
+              {color: this.getThemeModeColorChange()},
             ]}>
-            {getVideo.description}
+            {getVideo?.description}
           </Text>
         )}
         <View style={styles.subscribeContainer}>
@@ -560,43 +580,44 @@ class VideoPlayers extends Component<IProps, IState> {
             <View
               style={[
                 styles.authorContainer,
-                getState.themeMode
+                getState?.themeMode
                   ? {backgroundColor: '#fff'}
                   : {backgroundColor: '#000000aa'},
               ]}>
               <Text
                 style={[
                   styles.subscribeLogo,
-                  getState.themeMode ? {color: '#000000'} : {color: '#ffffff'},
+                  getState?.themeMode ? {color: '#000000'} : {color: '#ffffff'},
                 ]}>
-                {getVideo.author[0]}
+                {getVideo?.author[0]}
               </Text>
             </View>
             <Text
               style={[
                 styles.authorText,
-                getState.themeMode ? {color: '#fff'} : {color: '#030303'},
+                {color: this.getThemeModeColorChange()},
               ]}>
-              {getVideo.author} {getVideo.subscriber}
+              {getVideo?.author} {getVideo?.subscriber}
             </Text>
           </View>
           <TouchableOpacity
             style={[
               styles.subscriptionButton,
-              getState.themeMode
+              getState?.themeMode
                 ? {backgroundColor: '#fff'}
                 : {backgroundColor: '#900'},
             ]}>
             <Text
               style={[
                 styles.authorText,
-                getState.themeMode ? {color: '#000000'} : {color: '#ffffff'},
+                getState?.themeMode ? {color: '#000000'} : {color: '#ffffff'},
               ]}>
               Subscribe
             </Text>
           </TouchableOpacity>
         </View>
         <FlatList
+          testID="VideoListSmall"
           data={currentVideoList}
           showsVerticalScrollIndicator={false}
           style={styles.videoListContainer}
@@ -605,6 +626,7 @@ class VideoPlayers extends Component<IProps, IState> {
           renderItem={({item}) => {
             return (
               <TouchableOpacity
+                testID={`videoSmall${item.id}`}
                 onPress={() => this.onClickPlayVideo(item.id)}
                 style={styles.videoPageContainer}>
                 <ImageBackground
@@ -620,16 +642,12 @@ class VideoPlayers extends Component<IProps, IState> {
                 </ImageBackground>
                 <View style={styles.thumbTitleVideoContainer}>
                   <View style={styles.thumbTitleContainer}>
-                    {/* <Image
-                      source={{uri: item.thumbnailUrl}}
-                      resizeMode="stretch"
-                      style={styles.thumbThumbnailImage}
-                    /> */}
                     <View style={styles.thumbTitleTextContainer}>
                       <Text
+                        testID={`DataText${item.id}`}
                         style={[
                           styles.thumbVideoTittle,
-                          getState.themeMode
+                          getState?.themeMode
                             ? {color: '#fff'}
                             : {color: '#030303'},
                         ]}>
@@ -638,7 +656,7 @@ class VideoPlayers extends Component<IProps, IState> {
                       <Text
                         style={[
                           styles.thumbViewsText,
-                          getState.themeMode
+                          getState?.themeMode
                             ? {color: '#fff'}
                             : {color: '#030303'},
                         ]}>

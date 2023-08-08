@@ -15,55 +15,16 @@ import {
 } from 'react-native-responsive-screen';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {connect} from 'react-redux';
-import { ActiveVideo } from './Action';
+import {ActiveVideo} from './Action';
 interface IProps {
   globalState: any;
-   clickVideo: (id: string) => void;
+  clickVideo: (id: string) => void;
   navigation?: {push: (arg: string) => void};
 }
 
-// const imagesList = [
-//   {
-//     id: 0,
-//     image: require('./assets/Trending.png'),
-//   },
-//   {
-//     id: 1,
-//     image: require('./assets/Music.png'),
-//   },
-//   {
-//     id: 2,
-//     image: require('./assets/Gaming.png'),
-//   },
-//   {
-//     id: 3,
-//     image: require('./assets/News.png'),
-//   },
-//   {
-//     id: 4,
-//     image: require('./assets/Films.png'),
-//   },
-//   {
-//     id: 5,
-//     image: require('./assets/FashionBeauty.png'),
-//   },
-//   {
-//     id: 6,
-//     image: require('./assets/Learning.png'),
-//   },
-//   {
-//     id: 7,
-//     image: require('./assets/Live.png'),
-//   },
-//   {
-//     id: 8,
-//     image: require('./assets/Sport.png'),
-//   },
-// ];
-
 interface IState {}
 class Explore extends Component<IProps, IState> {
-   playVideo = async (id: string) => {
+  playVideo = async (id: string) => {
     await this.props.clickVideo(id);
     this.props.navigation?.push('VideoPlayers');
   };
@@ -71,6 +32,7 @@ class Explore extends Component<IProps, IState> {
     const getState = this.props.globalState;
     return (
       <View
+        testID="ExploreScreenContainer"
         style={[
           styles.exploreContainer,
           getState.themeMode
@@ -144,7 +106,11 @@ class Explore extends Component<IProps, IState> {
           </Text>
           {getState.videoList.map((item: any) => {
             return (
-              <TouchableOpacity key={item.id} style={styles.videoContainer} onPress={() => this.playVideo(item.id)}>
+              <TouchableOpacity
+                testID={`explore${item.id}`}
+                key={item.id}
+                style={styles.videoContainer}
+                onPress={() => this.playVideo(item.id)}>
                 <ImageBackground
                   source={{uri: item.thumbnailUrl}}
                   resizeMode="stretch"

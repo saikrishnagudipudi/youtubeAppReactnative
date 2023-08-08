@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -15,6 +16,7 @@ import {
 import {connect} from 'react-redux';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {ActiveVideo} from './Action';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 const buttonList = [
   {
     id: 1,
@@ -51,12 +53,14 @@ class Home extends Component<IProps, IState> {
     await this.props.clickVideo(id);
     this.props.navigation?.push('VideoPlayers');
   };
+  getButtonColors = () => (this.props.globalState.themeMode ? '#fff' : '#000');
 
   render() {
     const getState = this.props.globalState;
     const {activeId} = this.state;
     return (
       <View
+        testID="homeScreen"
         style={[
           styles.homeContainer,
           getState.themeMode
@@ -71,10 +75,8 @@ class Home extends Component<IProps, IState> {
               style={styles.shortImage}
             />
             <Text
-              style={[
-                styles.shortText,
-                getState.themeMode ? {color: '#fff'} : {color: '#000'},
-              ]}>
+              testID="ShortId"
+              style={[styles.shortText, {color: this.getButtonColors()}]}>
               Shorts
             </Text>
           </View>
@@ -86,6 +88,7 @@ class Home extends Component<IProps, IState> {
             renderItem={({item}) => {
               return (
                 <TouchableOpacity
+                  testID={`category${item.id}`}
                   onPress={() => this.onClickTopButton(item.id)}
                   style={[
                     activeId === item.id
@@ -103,19 +106,16 @@ class Home extends Component<IProps, IState> {
                         ],
                   ]}>
                   <Text
+                    testID={`buttonText${item.id}`}
                     style={[
                       activeId === item.id
                         ? [
                             styles.buttonActiveItemText,
-                            getState.themeMode
-                              ? {color: '#000'}
-                              : {color: '#fff'},
+                            {color: getState.themeMode ? '#000' : '#fff'},
                           ]
                         : [
                             styles.buttonItemText,
-                            getState.themeMode
-                              ? {color: '#fff'}
-                              : {color: '#000'},
+                            {color: this.getButtonColors()},
                           ],
                     ]}>
                     {item.text}
@@ -133,6 +133,7 @@ class Home extends Component<IProps, IState> {
           renderItem={({item}) => {
             return (
               <TouchableOpacity
+                testID={`video${item.id}`}
                 onPress={() => this.onClickVideo(item.id)}
                 style={styles.videoContainer}>
                 <ImageBackground
@@ -175,7 +176,7 @@ class Home extends Component<IProps, IState> {
                   </View>
                   <Entypo
                     name="dots-three-vertical"
-                    color={getState.themeMode ? '#fff' : '#000'}
+                    color={this.getButtonColors()}
                     size={hp('3')}
                   />
                 </View>
@@ -290,8 +291,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingLeft: wp("0.5"),
-    paddingRight: wp("0.5")
+    paddingLeft: wp('0.5'),
+    paddingRight: wp('0.5'),
   },
   durationTimeText: {
     color: '#000000',

@@ -19,7 +19,7 @@ interface IProps {
 }
 interface IState {}
 
-export class First extends Component<IProps, IState> {
+class First extends Component<IProps, IState> {
   componentDidUpdate(
     prevProps: Readonly<IProps>,
     prevState: Readonly<IState>,

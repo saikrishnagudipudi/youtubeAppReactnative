@@ -1,4 +1,63 @@
-const initialState = {
+const initialState: {
+  themeMode: boolean;
+  videoList: {
+    id: string;
+    title: string;
+    thumbnailUrl: string;
+    duration: string;
+    uploadTime: string;
+    views: string;
+    author: string;
+    videoUrl: string;
+    description: string;
+    subscriber: string;
+    isLive: boolean;
+  }[];
+  activeVideo:
+    | {
+        id: string;
+        title: string;
+        thumbnailUrl: string;
+        duration: string;
+        uploadTime: string;
+        views: string;
+        author: string;
+        videoUrl: string;
+        description: string;
+        subscriber: string;
+        isLive: boolean;
+      }[]
+    | {
+        id: string;
+        title: string;
+        thumbnailUrl: string;
+        duration: string;
+        uploadTime: string;
+        views: string;
+        author: string;
+        videoUrl: string;
+        description: string;
+        subscriber: string;
+        isLive: boolean;
+        videoDuration: number;
+        seeks: number;
+      }[];
+  historyList: {
+    id: string;
+    title: string;
+    thumbnailUrl: string;
+    duration: string;
+    uploadTime: string;
+    views: string;
+    author: string;
+    videoUrl: string;
+    description: string;
+    subscriber: string;
+    isLive: boolean;
+    videoDuration: number;
+    seeks: number;
+  }[];
+} = {
   themeMode: false,
   videoList: [
     {
@@ -133,8 +192,7 @@ const initialState = {
   activeVideo: [],
   historyList: [],
 };
-// videoDuration: videoDuration,
-//       seeks: videoDurationValue,
+
 const Reducer = (state = initialState, action: any) => {
   switch (action.type) {
     case 'THEME':
