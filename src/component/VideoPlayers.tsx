@@ -38,6 +38,7 @@ interface IState {
   visibleVolumeSlider: boolean;
   previousVideoId: string;
   previousVideoIconDisable: boolean;
+  getProps: boolean;
   currentVideoList: any[];
 }
 
@@ -58,6 +59,7 @@ class VideoPlayers extends Component<IProps, IState> {
     previousVideoId: '0',
     previousVideoIconDisable: true,
     currentVideoList: [],
+    getProps: true,
   };
 
   timeConvert = async (time: any) => {
@@ -72,7 +74,7 @@ class VideoPlayers extends Component<IProps, IState> {
   playVideo = async () => {
     const {videoDurationValue} = this.state;
     this.setState({videoPlayPause: false});
-    this.player.current.seek(videoDurationValue);
+    this.player.seek(videoDurationValue);
     await this.timeConvert(videoDurationValue);
     await this.checkTime();
   };
@@ -87,7 +89,7 @@ class VideoPlayers extends Component<IProps, IState> {
   };
 
   onDurationChange = async (value: number) => {
-    await this.player.current.seek(value);
+    await this.player.seek(value);
     this.setState({videoDurationValue: value});
     await this.timeConvert(value);
   };
@@ -137,9 +139,10 @@ class VideoPlayers extends Component<IProps, IState> {
     setTimeout(() => {
       this.visibleControls();
     }, 9000);
+    const getState = this.props.globalState;
+    const getVideo = getState?.activeVideo[0];
     const {videoDurationValue} = this.state;
-
-    this.player?.current.seek(videoDurationValue);
+    if (getVideo?.seeks === undefined) this.player?.seek(videoDurationValue);
     // this.setState({visibleVolumeSlider: false});
   };
 
@@ -233,7 +236,7 @@ class VideoPlayers extends Component<IProps, IState> {
         videoDurationMinutes: minutes,
         videoDurationSeconds: seconds,
       }));
-      await this.player.current.seek(videoDurationValue + 10);
+      await this.player.seek(videoDurationValue + 10);
     } else {
       // const newDuration = videoDurationValue + 10;
       const minutes = Math.floor(videoDuration / 60);
@@ -243,7 +246,7 @@ class VideoPlayers extends Component<IProps, IState> {
         videoDurationMinutes: minutes,
         videoDurationSeconds: seconds,
       }));
-      await this.player.current.seek(videoDuration);
+      await this.player.seek(videoDuration);
     }
   };
 
@@ -255,7 +258,7 @@ class VideoPlayers extends Component<IProps, IState> {
         videoDurationMinutes: 0,
         videoDurationSeconds: 0,
       });
-      await this.player.current.seek(0);
+      await this.player.seek(0);
     } else {
       const newDuration = videoDurationValue - 10;
       const minutes = Math.floor(newDuration / 60);
@@ -265,7 +268,7 @@ class VideoPlayers extends Component<IProps, IState> {
         videoDurationMinutes: minutes,
         videoDurationSeconds: seconds,
       }));
-      await this.player.current.seek(videoDurationValue - 10);
+      await this.player.seek(videoDurationValue - 10);
     }
   };
 
@@ -298,7 +301,7 @@ class VideoPlayers extends Component<IProps, IState> {
       previousVideoIconDisable: false,
       currentVideoList: shuffleList,
     });
-    await this.player.current.seek(0);
+    await this.player.seek(0);
     await this.clearTimer();
     await this.getData();
     await this.playVideo();
@@ -333,16 +336,30 @@ class VideoPlayers extends Component<IProps, IState> {
       previousVideoIconDisable: false,
       currentVideoList: shuffleList,
     });
-    await this.player.current.seek(0);
+    await this.player.seek(0);
     await this.clearTimer();
     await this.getData();
     await this.playVideo();
   };
   static getDerivedStateFromProps(nextProps: IProps, prevState: IState) {
-    prevState.currentVideoList = nextProps.globalState.videoList;
+  
+    if (prevState.getProps) {
+      const filterVideosList = nextProps.globalState?.videoList.filter(
+        (each: {id: string}) => each.id !== nextProps.globalState?.id,
+      );
+      const shuffleList = filterVideosList
+        ?.map((a: any) => ({sort: Math.random(), value: a}))
+        .sort((a: any, b: any) => a.sort - b.sort)
+        .map((a: any) => a.value);
+        prevState.currentVideoList = shuffleList;
+        prevState.getProps = false;
+        return {
+          prevState,
+        };
+    }
     return {
       prevState,
-    };
+    }
   }
   onClickPlayVideo = async (id: string) => {
     const {videoDurationValue, videoDuration} = this.state;
@@ -373,7 +390,7 @@ class VideoPlayers extends Component<IProps, IState> {
       previousVideoIconDisable: false,
       currentVideoList: shuffleList,
     });
-    await this.player.current.seek(0);
+    await this.player.seek(0);
     await this.clearTimer();
     await this.getData();
 
