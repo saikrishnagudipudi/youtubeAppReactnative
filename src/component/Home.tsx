@@ -3,6 +3,7 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -67,123 +68,125 @@ class Home extends Component<IProps, IState> {
             ? {backgroundColor: '#000000cc'}
             : {backgroundColor: '#ffffff'},
         ]}>
-        <View style={styles.topButtonContainer}>
-          <View style={styles.shortContainer}>
-            <Image
-              source={require('./assets/youtube-shorts.png')}
-              resizeMode="stretch"
-              style={styles.shortImage}
-            />
-            <Text
-              testID="ShortId"
-              style={[styles.shortText, {color: this.getButtonColors()}]}>
-              Shorts
-            </Text>
-          </View>
-          <FlatList
-            data={buttonList}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={item => item.id.toString()}
-            renderItem={({item}) => {
-              return (
-                <TouchableOpacity
-                  testID={`category${item.id}`}
-                  onPress={() => this.onClickTopButton(item.id)}
-                  style={[
-                    activeId === item.id
-                      ? [
-                          styles.buttonActive,
-                          getState.themeMode
-                            ? {backgroundColor: '#fff'}
-                            : {backgroundColor: '#000'},
-                        ]
-                      : [
-                          styles.itemButtonContainer,
-                          getState.themeMode
-                            ? {backgroundColor: '#DADADA5a'}
-                            : {backgroundColor: '#DADADA5a'},
-                        ],
-                  ]}>
-                  <Text
-                    testID={`buttonText${item.id}`}
+        <SafeAreaView>
+          <View style={styles.topButtonContainer}>
+            <View style={styles.shortContainer}>
+              <Image
+                source={require('./assets/youtube-shorts.png')}
+                resizeMode="stretch"
+                style={styles.shortImage}
+              />
+              <Text
+                testID="ShortId"
+                style={[styles.shortText, {color: this.getButtonColors()}]}>
+                Shorts
+              </Text>
+            </View>
+            <FlatList
+              data={buttonList}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={item => item.id.toString()}
+              renderItem={({item}) => {
+                return (
+                  <TouchableOpacity
+                    testID={`category${item.id}`}
+                    onPress={() => this.onClickTopButton(item.id)}
                     style={[
                       activeId === item.id
                         ? [
-                            styles.buttonActiveItemText,
-                            {color: getState.themeMode ? '#000' : '#fff'},
+                            styles.buttonActive,
+                            getState.themeMode
+                              ? {backgroundColor: '#fff'}
+                              : {backgroundColor: '#000'},
                           ]
                         : [
-                            styles.buttonItemText,
-                            {color: this.getButtonColors()},
+                            styles.itemButtonContainer,
+                            getState.themeMode
+                              ? {backgroundColor: '#DADADA5a'}
+                              : {backgroundColor: '#DADADA5a'},
                           ],
                     ]}>
-                    {item.text}
-                  </Text>
+                    <Text
+                      testID={`buttonText${item.id}`}
+                      style={[
+                        activeId === item.id
+                          ? [
+                              styles.buttonActiveItemText,
+                              {color: getState.themeMode ? '#000' : '#fff'},
+                            ]
+                          : [
+                              styles.buttonItemText,
+                              {color: this.getButtonColors()},
+                            ],
+                      ]}>
+                      {item.text}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          </View>
+          <FlatList
+            data={getState.videoList}
+            showsVerticalScrollIndicator={false}
+            style={styles.videoListContainer}
+            keyExtractor={item => item.id}
+            renderItem={({item}) => {
+              return (
+                <TouchableOpacity
+                  testID={`video${item.id}`}
+                  onPress={() => this.onClickVideo(item.id)}
+                  style={styles.videoContainer}>
+                  <ImageBackground
+                    source={{uri: item.thumbnailUrl}}
+                    resizeMode="stretch"
+                    style={styles.videoBackImage}>
+                    <View style={styles.durationContainer}>
+                      <Text style={[styles.durationTimeText, {color: '#fff'}]}>
+                        {item.duration}
+                      </Text>
+                    </View>
+                  </ImageBackground>
+                  <View style={styles.titleVideoContainer}>
+                    <View style={styles.titleContainer}>
+                      <Image
+                        source={{uri: item.thumbnailUrl}}
+                        resizeMode="stretch"
+                        style={styles.thumbnailImage}
+                      />
+                      <View style={styles.titleTextContainer}>
+                        <Text
+                          style={[
+                            styles.videoTittle,
+                            getState.themeMode
+                              ? {color: '#fff'}
+                              : {color: '#030303'},
+                          ]}>
+                          {item.title}
+                        </Text>
+                        <Text
+                          style={[
+                            styles.viewsText,
+                            getState.themeMode
+                              ? {color: '#fff'}
+                              : {color: '#030303'},
+                          ]}>
+                          {item.views} Views, {item.uploadTime}
+                        </Text>
+                      </View>
+                    </View>
+                    <Entypo
+                      name="dots-three-vertical"
+                      color={this.getButtonColors()}
+                      size={hp('3')}
+                    />
+                  </View>
                 </TouchableOpacity>
               );
             }}
           />
-        </View>
-        <FlatList
-          data={getState.videoList}
-          showsVerticalScrollIndicator={false}
-          style={styles.videoListContainer}
-          keyExtractor={item => item.id}
-          renderItem={({item}) => {
-            return (
-              <TouchableOpacity
-                testID={`video${item.id}`}
-                onPress={() => this.onClickVideo(item.id)}
-                style={styles.videoContainer}>
-                <ImageBackground
-                  source={{uri: item.thumbnailUrl}}
-                  resizeMode="stretch"
-                  style={styles.videoBackImage}>
-                  <View style={styles.durationContainer}>
-                    <Text style={[styles.durationTimeText, {color: '#fff'}]}>
-                      {item.duration}
-                    </Text>
-                  </View>
-                </ImageBackground>
-                <View style={styles.titleVideoContainer}>
-                  <View style={styles.titleContainer}>
-                    <Image
-                      source={{uri: item.thumbnailUrl}}
-                      resizeMode="stretch"
-                      style={styles.thumbnailImage}
-                    />
-                    <View style={styles.titleTextContainer}>
-                      <Text
-                        style={[
-                          styles.videoTittle,
-                          getState.themeMode
-                            ? {color: '#fff'}
-                            : {color: '#030303'},
-                        ]}>
-                        {item.title}
-                      </Text>
-                      <Text
-                        style={[
-                          styles.viewsText,
-                          getState.themeMode
-                            ? {color: '#fff'}
-                            : {color: '#030303'},
-                        ]}>
-                        {item.views} Views, {item.uploadTime}
-                      </Text>
-                    </View>
-                  </View>
-                  <Entypo
-                    name="dots-three-vertical"
-                    color={this.getButtonColors()}
-                    size={hp('3')}
-                  />
-                </View>
-              </TouchableOpacity>
-            );
-          }}
-        />
+        </SafeAreaView>
       </View>
     );
   }

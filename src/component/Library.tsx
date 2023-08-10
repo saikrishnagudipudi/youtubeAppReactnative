@@ -3,6 +3,7 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -377,8 +378,8 @@ const styles = StyleSheet.create({
   },
   historySliderContainer: {
     position: 'absolute',
-    top: hp(14),
-    left: wp(-4),
+    top: Platform.OS === "ios" ? hp(12.5) : hp(14),
+    left: Platform.OS === "ios" ? wp(-3) : wp(-4),
   },
   historySlider: {
     height: hp('2'),

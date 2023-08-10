@@ -13,7 +13,7 @@ import {
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 const Tab = createBottomTabNavigator();
-import {StatusBar, StyleSheet, Text, View} from 'react-native';
+import {SafeAreaView, StatusBar, StyleSheet, Text, View} from 'react-native';
 import Home from './Home';
 import Explore from './Explore';
 import Add from './Add';
@@ -50,197 +50,204 @@ class BottomTab extends Component<IProps, IState> {
             ? {backgroundColor: '#000000cc'}
             : {backgroundColor: '#ffffff'},
         ]}>
-        <StatusBar
-          backgroundColor={getState.themeMode ? '#000000aa' : '#fff'}
-          barStyle={getState.themeMode ? 'light-content' : 'dark-content'}
-        />
-        <View style={styles.homeHeaderContainer}>
-          <View style={styles.titleContainer}>
-            <View style={styles.iconContainer}>
-              <FontAwesome name="play" color={'#fff'} size={hp('2.3')} />
+        <SafeAreaView style={{flex: 1}}>
+          <StatusBar
+            backgroundColor={getState.themeMode ? '#000000aa' : '#fff'}
+            barStyle={getState.themeMode ? 'light-content' : 'dark-content'}
+          />
+          <View style={styles.homeHeaderContainer}>
+            <View style={styles.titleContainer}>
+              <View style={styles.iconContainer}>
+                <FontAwesome name="play" color={'#fff'} size={hp('2.3')} />
+              </View>
+              <Text
+                style={[
+                  styles.title,
+                  getState.themeMode ? {color: '#FFFFFF'} : {color: '#282828'},
+                ]}>
+                Youtube
+              </Text>
             </View>
-            <Text
+            <View
               style={[
-                styles.title,
-                getState.themeMode ? {color: '#FFFFFF'} : {color: '#282828'},
+                styles.titleBarIcons,
+                //   {backgroundColor: '#C4C4C426'},
               ]}>
-              Youtube
-            </Text>
+              <MaterialCommunityIcons
+                name="cast"
+                color={this.getHeaderIcons()}
+                size={hp('3.4')}
+              />
+              <AntDesign
+                name="bells"
+                color={this.getHeaderIcons()}
+                size={hp('3.4')}
+              />
+              <AntDesign
+                name="search1"
+                color={this.getHeaderIcons()}
+                size={hp('3.4')}
+                onPress={this.onSearch}
+                testID="search"
+              />
+              <FontAwesome
+                name="user-circle"
+                onPress={this.goProfile}
+                testID="profile"
+                color={this.getHeaderIcons()}
+                size={hp('3.4')}
+              />
+            </View>
           </View>
-          <View
-            style={[
-              styles.titleBarIcons,
-              //   {backgroundColor: '#C4C4C426'},
-            ]}>
-            <MaterialCommunityIcons
-              name="cast"
-              color={this.getHeaderIcons()}
-              size={hp('3.4')}
-            />
-            <AntDesign
-              name="bells"
-              color={this.getHeaderIcons()}
-              size={hp('3.4')}
-            />
-            <AntDesign
-              name="search1"
-              color={this.getHeaderIcons()}
-              size={hp('3.4')}
-              onPress={this.onSearch}
-              testID="search"
-            />
-            <FontAwesome
-              name="user-circle"
-              onPress={this.goProfile}
-              testID="profile"
-              color={this.getHeaderIcons()}
-              size={hp('3.4')}
-            />
-          </View>
-        </View>
-        <View style={{flex: 1}} testID="BottomTabBars">
-          <Tab.Navigator
-            initialRouteName="Home"
-            screenOptions={{
-              tabBarActiveTintColor: '#000000',
-              headerShown: false,
-              tabBarHideOnKeyboard: true,
-              tabBarShowLabel: false,
-              tabBarStyle: {
-                height: hp(10),
-                backgroundColor: 'rgba(196, 196, 196, 0.35)',
-                elevation: 0,
-                width: wp(93),
-                borderRadius: hp('1.3'),
-              },
-              tabBarLabelStyle: {
-                backgroundColor: 'transparent',
-              },
-            }}>
-            <Tab.Screen
-              name="Home"
-              component={Home}
-              options={{
+
+          <View style={{flex: 1}} testID="BottomTabBars">
+            <Tab.Navigator
+              initialRouteName="Home"
+              screenOptions={{
+                tabBarActiveTintColor: '#000000',
+                headerShown: false,
+                tabBarHideOnKeyboard: true,
+                tabBarShowLabel: false,
+                tabBarStyle: {
+                  height: hp(10),
+                  width: wp(93),
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: 'rgba(196, 196, 196, 0.35)',
+                  elevation: 0,
+                  borderRadius: hp('1.3'),
+                  paddingBottom: 0,
+                },
                 tabBarLabelStyle: {
                   backgroundColor: 'transparent',
                 },
-                tabBarIcon: ({focused}) => (
-                  <View testID="tabButtons" style={styles.tabBarContainer}>
-                    {focused ? (
+              }}>
+              <Tab.Screen
+                name="Home"
+                component={Home}
+                options={{
+                  tabBarLabelStyle: {
+                    backgroundColor: 'transparent',
+                  },
+                  tabBarIcon: ({focused}) => (
+                    <View testID="tabButtons" style={styles.tabBarContainer}>
+                      {focused ? (
+                        <MaterialCommunityIcons
+                          name="home-variant"
+                          color={this.getColorIcons()}
+                          size={hp('4.2')}
+                        />
+                      ) : (
+                        <Octicons
+                          name="home"
+                          color={this.getColorIcons()}
+                          size={hp('4.2')}
+                        />
+                      )}
+                      <Text
+                        style={[
+                          styles.labelInActiveStyle,
+                          {color: this.getColorIcons()},
+                        ]}>
+                        Home
+                      </Text>
+                    </View>
+                  ),
+                }}
+              />
+              <Tab.Screen
+                name="Explore"
+                component={Explore}
+                options={{
+                  tabBarIcon: ({focused}) => (
+                    <View style={styles.tabBarContainer}>
+                      <Ionicons
+                        name={focused ? 'compass-sharp' : 'compass-outline'}
+                        color={this.getColorIcons()}
+                        size={hp('4.2')}
+                      />
+                      <Text
+                        style={[
+                          styles.labelInActiveStyle,
+                          {color: this.getColorIcons()},
+                        ]}>
+                        Explore
+                      </Text>
+                    </View>
+                  ),
+                }}
+              />
+              <Tab.Screen
+                name="Add"
+                component={Add}
+                options={{
+                  tabBarIcon: () => (
+                    <View>
+                      <AntDesign
+                        name="pluscircleo"
+                        color={this.getColorIcons()}
+                        size={hp('6.5')}
+                      />
+                    </View>
+                  ),
+                }}
+              />
+              <Tab.Screen
+                name="Subscription"
+                component={Subscription}
+                options={{
+                  tabBarIcon: ({focused}) => (
+                    <View style={styles.tabBarContainer}>
                       <MaterialCommunityIcons
-                        name="home-variant"
+                        name={
+                          focused
+                            ? 'youtube-subscription'
+                            : 'youtube-subscription'
+                        }
                         color={this.getColorIcons()}
                         size={hp('4.2')}
                       />
-                    ) : (
-                      <Octicons
-                        name="home"
+                      <Text
+                        style={[
+                          styles.labelInActiveStyle,
+                          {color: this.getColorIcons(), fontSize: hp('1.45')},
+                        ]}>
+                        Subscription
+                      </Text>
+                    </View>
+                  ),
+                }}
+              />
+              <Tab.Screen
+                name="Library"
+                component={Library}
+                options={{
+                  tabBarIcon: ({focused}) => (
+                    <View style={styles.tabBarContainer}>
+                      <MaterialCommunityIcons
+                        name={
+                          focused
+                            ? 'play-box-multiple'
+                            : 'play-box-multiple-outline'
+                        }
                         color={this.getColorIcons()}
                         size={hp('4.2')}
                       />
-                    )}
-                    <Text
-                      style={[
-                        styles.labelInActiveStyle,
-                        {color: this.getColorIcons()},
-                      ]}>
-                      Home
-                    </Text>
-                  </View>
-                ),
-              }}
-            />
-            <Tab.Screen
-              name="Explore"
-              component={Explore}
-              options={{
-                tabBarIcon: ({focused}) => (
-                  <View style={styles.tabBarContainer}>
-                    <Ionicons
-                      name={focused ? 'compass-sharp' : 'compass-outline'}
-                      color={this.getColorIcons()}
-                      size={hp('4.2')}
-                    />
-                    <Text
-                      style={[
-                        styles.labelInActiveStyle,
-                        {color: this.getColorIcons()},
-                      ]}>
-                      Explore
-                    </Text>
-                  </View>
-                ),
-              }}
-            />
-            <Tab.Screen
-              name="Add"
-              component={Add}
-              options={{
-                tabBarIcon: () => (
-                  <View>
-                    <AntDesign
-                      name="pluscircleo"
-                      color={this.getColorIcons()}
-                      size={hp('7')}
-                    />
-                  </View>
-                ),
-              }}
-            />
-            <Tab.Screen
-              name="Subscription"
-              component={Subscription}
-              options={{
-                tabBarIcon: ({focused}) => (
-                  <View style={styles.tabBarContainer}>
-                    <MaterialCommunityIcons
-                      name={
-                        focused
-                          ? 'youtube-subscription'
-                          : 'youtube-subscription'
-                      }
-                      color={this.getColorIcons()}
-                      size={hp('4.2')}
-                    />
-                    <Text
-                      style={[
-                        styles.labelInActiveStyle,
-                        {color: this.getColorIcons(), fontSize: hp('1.4')},
-                      ]}>
-                      Subscription
-                    </Text>
-                  </View>
-                ),
-              }}
-            />
-            <Tab.Screen
-              name="Library"
-              component={Library}
-              options={{
-                tabBarIcon: ({focused}) => (
-                  <View style={styles.tabBarContainer}>
-                    <MaterialCommunityIcons
-                      name={
-                        focused
-                          ? 'play-box-multiple'
-                          : 'play-box-multiple-outline'
-                      }
-                      color={this.getColorIcons()}
-                      size={hp('4.2')}
-                    />
-                    <Text
-                      style={[
-                        styles.labelInActiveStyle,
-                        {color: this.getColorIcons()},
-                      ]}>
-                      Library
-                    </Text>
-                  </View>
-                ),
-              }}
-            />
-          </Tab.Navigator>
-        </View>
+                      <Text
+                        style={[
+                          styles.labelInActiveStyle,
+                          {color: this.getColorIcons()},
+                        ]}>
+                        Library
+                      </Text>
+                    </View>
+                  ),
+                }}
+              />
+            </Tab.Navigator>
+          </View>
+        </SafeAreaView>
       </View>
     );
   }
@@ -259,7 +266,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(BottomTab);
 const styles = StyleSheet.create({
   homeContainer: {
     flex: 1,
-    padding: hp('2'),
+    padding: hp(1.5),
   },
   homeHeaderContainer: {
     flexDirection: 'row',
@@ -298,9 +305,12 @@ const styles = StyleSheet.create({
     borderRadius: hp('1'),
   },
   tabBarContainer: {
+    // height: hp(10),
+    width: wp(30),
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    // borderWidth: 1,
   },
   labelInActiveStyle: {
     color: '#000000',

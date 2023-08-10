@@ -2,6 +2,8 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  Platform,
+  SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -342,7 +344,6 @@ class VideoPlayers extends Component<IProps, IState> {
     await this.playVideo();
   };
   static getDerivedStateFromProps(nextProps: IProps, prevState: IState) {
-  
     if (prevState.getProps) {
       const filterVideosList = nextProps.globalState?.videoList.filter(
         (each: {id: string}) => each.id !== nextProps.globalState?.id,
@@ -351,15 +352,15 @@ class VideoPlayers extends Component<IProps, IState> {
         ?.map((a: any) => ({sort: Math.random(), value: a}))
         .sort((a: any, b: any) => a.sort - b.sort)
         .map((a: any) => a.value);
-        prevState.currentVideoList = shuffleList;
-        prevState.getProps = false;
-        return {
-          prevState,
-        };
+      prevState.currentVideoList = shuffleList;
+      prevState.getProps = false;
+      return {
+        prevState,
+      };
     }
     return {
       prevState,
-    }
+    };
   }
   onClickPlayVideo = async (id: string) => {
     const {videoDurationValue, videoDuration} = this.state;
@@ -426,271 +427,280 @@ class VideoPlayers extends Component<IProps, IState> {
             ? {backgroundColor: '#000000cc'}
             : {backgroundColor: '#ffffff'},
         ]}>
-        <TouchableOpacity
-          testID="VideoPlayer"
-          onPress={this.onClickVisibleControl}>
-          <Video
-            testID="videoPlay"
-            source={{
-              uri: getVideo?.videoUrl,
-            }}
-            ref={ref => {
-              this.player = ref;
-            }}
-            style={styles.backgroundVideo}
-            paused={videoPlayPause}
-            disableFocus
-            volume={volumeValue}
-            resizeMode="stretch"
-            allowsExternalPlayback={false}
-          />
-        </TouchableOpacity>
-        {controlVisible && (
-          <>
-            <TouchableOpacity
-              testID="DownIconId"
-              onPress={this.goHome}
-              style={styles.videoHeaderContainer}>
-              <AntDesign name="down" color={'#fff'} size={hp('3')} />
-            </TouchableOpacity>
-            <View style={styles.videoControlsContainer}>
-              <View style={styles.videoControlIconsContainer}>
-                <TouchableOpacity
-                  onPress={this.backPlay}
-                  testID="back10SecondPlay"
-                  style={styles.iconBackgroundContainer}>
-                  <MaterialIcons
-                    name="replay-10"
-                    color={'#fff'}
-                    size={hp('3.5')}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.iconBackgroundContainer}
-                  // disabled={previousVideoIconDisable}
-                  testID="playPrevious"
-                  onPress={this.playPreviousVideo}>
-                  <AntDesign
-                    name="stepbackward"
-                    color={'#fff'}
-                    size={hp('3')}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  testID="VideoPlayControl"
-                  onPress={videoPlayPause ? this.playVideo : this.pauseVideo}
-                  style={styles.iconBackgroundContainer}>
-                  <AntDesign
-                    name={videoPlayPause ? 'caretright' : 'pause'}
-                    color={'#fff'}
-                    size={hp('3')}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.iconBackgroundContainer}
-                  testID="forwardToNextPlay"
-                  onPress={this.forwardToNextVideo}>
-                  <AntDesign name="stepforward" color={'#fff'} size={hp('3')} />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.iconBackgroundContainer}
-                  onPress={this.forwardPlay}
-                  testID="forward10Seconds">
-                  <MaterialIcons
-                    name="forward-10"
-                    color={'#fff'}
-                    size={hp('3.5')}
-                  />
-                </TouchableOpacity>
-              </View>
-            </View>
-            <View style={styles.sliderContainer}>
-              <View style={styles.timeContainer}>
-                <Text testID="videoDurationTimeText" style={styles.time}>
-                  {`${videoDurationMinutes}:${videoDurationSeconds}/`}
-                  {getVideo?.duration}
-                </Text>
-                <View style={styles.volumeContainer}>
-                  <FontAwesome
-                    testID="volumeIcon"
-                    name="volume-up"
-                    color={'#fff'}
-                    size={hp('3')}
-                    onPress={this.clickVolume}
-                  />
-                  {visibleVolumeSlider && (
-                    <View testID="VolumeSlider">
-                      <Slider
-                        style={styles.volumeSlider}
-                        thumbTintColor="#ffffff"
-                        minimumValue={0}
-                        maximumValue={1}
-                        maximumTrackTintColor="#fff"
-                        minimumTrackTintColor="#fff"
-                        value={volumeValue}
-                        onValueChange={value => this.onChangeVolume(value)}
-                      />
-                    </View>
-                  )}
+        <SafeAreaView>
+          <TouchableOpacity
+            testID="VideoPlayer"
+            onPress={this.onClickVisibleControl}>
+            <Video
+              testID="videoPlay"
+              source={{
+                uri: getVideo?.videoUrl,
+              }}
+              ref={ref => {
+                this.player = ref;
+              }}
+              style={styles.backgroundVideo}
+              paused={videoPlayPause}
+              disableFocus
+              volume={volumeValue}
+              resizeMode="stretch"
+              allowsExternalPlayback={false}
+            />
+          </TouchableOpacity>
+          {controlVisible && (
+            <>
+              <TouchableOpacity
+                testID="DownIconId"
+                onPress={this.goHome}
+                style={styles.videoHeaderContainer}>
+                <AntDesign name="down" color={'#fff'} size={hp('3')} />
+              </TouchableOpacity>
+              <View style={styles.videoControlsContainer}>
+                <View style={styles.videoControlIconsContainer}>
+                  <TouchableOpacity
+                    onPress={this.backPlay}
+                    testID="back10SecondPlay"
+                    style={styles.iconBackgroundContainer}>
+                    <MaterialIcons
+                      name="replay-10"
+                      color={'#fff'}
+                      size={hp('3.5')}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.iconBackgroundContainer}
+                    // disabled={previousVideoIconDisable}
+                    testID="playPrevious"
+                    onPress={this.playPreviousVideo}>
+                    <AntDesign
+                      name="stepbackward"
+                      color={'#fff'}
+                      size={hp('3')}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    testID="VideoPlayControl"
+                    onPress={videoPlayPause ? this.playVideo : this.pauseVideo}
+                    style={styles.iconBackgroundContainer}>
+                    <AntDesign
+                      name={videoPlayPause ? 'caretright' : 'pause'}
+                      color={'#fff'}
+                      size={hp('3')}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.iconBackgroundContainer}
+                    testID="forwardToNextPlay"
+                    onPress={this.forwardToNextVideo}>
+                    <AntDesign
+                      name="stepforward"
+                      color={'#fff'}
+                      size={hp('3')}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.iconBackgroundContainer}
+                    onPress={this.forwardPlay}
+                    testID="forward10Seconds">
+                    <MaterialIcons
+                      name="forward-10"
+                      color={'#fff'}
+                      size={hp('3.5')}
+                    />
+                  </TouchableOpacity>
                 </View>
               </View>
+              <View style={styles.sliderContainer}>
+                <View style={styles.timeContainer}>
+                  <Text testID="videoDurationTimeText" style={styles.time}>
+                    {`${videoDurationMinutes}:${videoDurationSeconds}/`}
+                    {getVideo?.duration}
+                  </Text>
+                  <View style={styles.volumeContainer}>
+                    <FontAwesome
+                      testID="volumeIcon"
+                      name="volume-up"
+                      color={'#fff'}
+                      size={hp('3')}
+                      onPress={this.clickVolume}
+                    />
+                    {visibleVolumeSlider && (
+                      <View testID="VolumeSlider">
+                        <Slider
+                          style={styles.volumeSlider}
+                          thumbTintColor="#ffffff"
+                          minimumValue={0}
+                          maximumValue={1}
+                          maximumTrackTintColor="#fff"
+                          minimumTrackTintColor="#fff"
+                          value={volumeValue}
+                          onValueChange={value => this.onChangeVolume(value)}
+                        />
+                      </View>
+                    )}
+                  </View>
+                </View>
 
-              <View testID="VideoSlider">
-                <Slider
-                  style={styles.slider}
-                  thumbTintColor="#900"
-                  minimumValue={0}
-                  maximumValue={videoDuration}
-                  maximumTrackTintColor="#fff"
-                  minimumTrackTintColor="#900"
-                  value={videoDurationValue}
-                  onValueChange={value => this.onDurationChange(value)}
-                />
+                <View testID="VideoSlider">
+                  <Slider
+                    style={styles.slider}
+                    thumbTintColor="#900"
+                    minimumValue={0}
+                    maximumValue={videoDuration}
+                    maximumTrackTintColor="#fff"
+                    minimumTrackTintColor="#900"
+                    value={videoDurationValue}
+                    onValueChange={value => this.onDurationChange(value)}
+                  />
+                </View>
+              </View>
+            </>
+          )}
+          <View style={styles.titleVideoContainer}>
+            <View style={styles.titleContainer}>
+              <Image
+                source={{uri: getVideo?.thumbnailUrl}}
+                resizeMode="stretch"
+                style={styles.thumbnailImage}
+              />
+              <View style={styles.titleTextContainer}>
+                <Text
+                  style={[
+                    styles.videoTittle,
+                    {color: this.getThemeModeColorChange()},
+                  ]}>
+                  {getVideo?.title}
+                </Text>
+                <Text
+                  style={[
+                    styles.viewsText,
+                    {color: this.getThemeModeColorChange()},
+                  ]}>
+                  {getVideo?.views} Views, {getVideo?.uploadTime}, ...
+                  <Text testID="TextHide" onPress={this.checkMore}>
+                    {moreText ? 'Hide' : 'More'}
+                  </Text>
+                </Text>
               </View>
             </View>
-          </>
-        )}
-        <View style={styles.titleVideoContainer}>
-          <View style={styles.titleContainer}>
-            <Image
-              source={{uri: getVideo?.thumbnailUrl}}
-              resizeMode="stretch"
-              style={styles.thumbnailImage}
+            <Entypo
+              name="dots-three-vertical"
+              color={getState?.themeMode ? '#fff' : '#000'}
+              size={hp('3')}
             />
-            <View style={styles.titleTextContainer}>
-              <Text
-                style={[
-                  styles.videoTittle,
-                  {color: this.getThemeModeColorChange()},
-                ]}>
-                {getVideo?.title}
-              </Text>
-              <Text
-                style={[
-                  styles.viewsText,
-                  {color: this.getThemeModeColorChange()},
-                ]}>
-                {getVideo?.views} Views, {getVideo?.uploadTime}, ...
-                <Text testID="TextHide" onPress={this.checkMore}>
-                  {moreText ? 'Hide' : 'More'}
-                </Text>
-              </Text>
-            </View>
           </View>
-          <Entypo
-            name="dots-three-vertical"
-            color={getState?.themeMode ? '#fff' : '#000'}
-            size={hp('3')}
-          />
-        </View>
-        {moreText && (
-          <Text
-            style={[
-              styles.description,
-              {color: this.getThemeModeColorChange()},
-            ]}>
-            {getVideo?.description}
-          </Text>
-        )}
-        <View style={styles.subscribeContainer}>
-          <View style={styles.subscribeAuthorContainer}>
-            <View
-              style={[
-                styles.authorContainer,
-                getState?.themeMode
-                  ? {backgroundColor: '#fff'}
-                  : {backgroundColor: '#000000aa'},
-              ]}>
-              <Text
-                style={[
-                  styles.subscribeLogo,
-                  getState?.themeMode ? {color: '#000000'} : {color: '#ffffff'},
-                ]}>
-                {getVideo?.author[0]}
-              </Text>
-            </View>
+          {moreText && (
             <Text
               style={[
-                styles.authorText,
+                styles.description,
                 {color: this.getThemeModeColorChange()},
               ]}>
-              {getVideo?.author} {getVideo?.subscriber}
+              {getVideo?.description}
             </Text>
-          </View>
-          <TouchableOpacity
-            style={[
-              styles.subscriptionButton,
-              getState?.themeMode
-                ? {backgroundColor: '#fff'}
-                : {backgroundColor: '#900'},
-            ]}>
-            <Text
+          )}
+          <View style={styles.subscribeContainer}>
+            <View style={styles.subscribeAuthorContainer}>
+              <View
+                style={[
+                  styles.authorContainer,
+                  getState?.themeMode
+                    ? {backgroundColor: '#fff'}
+                    : {backgroundColor: '#000000aa'},
+                ]}>
+                <Text
+                  style={[
+                    styles.subscribeLogo,
+                    getState?.themeMode
+                      ? {color: '#000000'}
+                      : {color: '#ffffff'},
+                  ]}>
+                  {getVideo?.author[0]}
+                </Text>
+              </View>
+              <Text
+                style={[
+                  styles.authorText,
+                  {color: this.getThemeModeColorChange()},
+                ]}>
+                {getVideo?.author} {getVideo?.subscriber}
+              </Text>
+            </View>
+            <TouchableOpacity
               style={[
-                styles.authorText,
-                getState?.themeMode ? {color: '#000000'} : {color: '#ffffff'},
+                styles.subscriptionButton,
+                getState?.themeMode
+                  ? {backgroundColor: '#fff'}
+                  : {backgroundColor: '#900'},
               ]}>
-              Subscribe
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <FlatList
-          testID="VideoListSmall"
-          data={currentVideoList}
-          showsVerticalScrollIndicator={false}
-          style={styles.videoListContainer}
-          numColumns={2}
-          keyExtractor={item => item.id}
-          renderItem={({item}) => {
-            return (
-              <TouchableOpacity
-                testID={`videoSmall${item.id}`}
-                onPress={() => this.onClickPlayVideo(item.id)}
-                style={styles.videoPageContainer}>
-                <ImageBackground
-                  source={{uri: item.thumbnailUrl}}
-                  resizeMode="stretch"
-                  style={styles.videoThumbBackImage}>
-                  <View style={styles.thumbDurationContainer}>
-                    <Text
-                      style={[styles.thumbDurationTimeText, {color: '#fff'}]}>
-                      {item.duration}
-                    </Text>
-                  </View>
-                </ImageBackground>
-                <View style={styles.thumbTitleVideoContainer}>
-                  <View style={styles.thumbTitleContainer}>
-                    <View style={styles.thumbTitleTextContainer}>
+              <Text
+                style={[
+                  styles.authorText,
+                  getState?.themeMode ? {color: '#000000'} : {color: '#ffffff'},
+                ]}>
+                Subscribe
+              </Text>
+            </TouchableOpacity>
+          </View>
+          </SafeAreaView>
+          <FlatList
+            testID="VideoListSmall"
+            data={currentVideoList}
+            showsVerticalScrollIndicator={false}
+            style={styles.videoListContainer}
+            numColumns={2}
+            keyExtractor={item => item.id}
+            renderItem={({item}) => {
+              return (
+                <TouchableOpacity
+                  testID={`videoSmall${item.id}`}
+                  onPress={() => this.onClickPlayVideo(item.id)}
+                  style={styles.videoPageContainer}>
+                  <ImageBackground
+                    source={{uri: item.thumbnailUrl}}
+                    resizeMode="stretch"
+                    style={styles.videoThumbBackImage}>
+                    <View style={styles.thumbDurationContainer}>
                       <Text
-                        testID={`DataText${item.id}`}
-                        style={[
-                          styles.thumbVideoTittle,
-                          getState?.themeMode
-                            ? {color: '#fff'}
-                            : {color: '#030303'},
-                        ]}>
-                        {item.title}
-                      </Text>
-                      <Text
-                        style={[
-                          styles.thumbViewsText,
-                          getState?.themeMode
-                            ? {color: '#fff'}
-                            : {color: '#030303'},
-                        ]}>
-                        {item.views} Views, {item.uploadTime}
+                        style={[styles.thumbDurationTimeText, {color: '#fff'}]}>
+                        {item.duration}
                       </Text>
                     </View>
+                  </ImageBackground>
+                  <View style={styles.thumbTitleVideoContainer}>
+                    <View style={styles.thumbTitleContainer}>
+                      <View style={styles.thumbTitleTextContainer}>
+                        <Text
+                          testID={`DataText${item.id}`}
+                          style={[
+                            styles.thumbVideoTittle,
+                            getState?.themeMode
+                              ? {color: '#fff'}
+                              : {color: '#030303'},
+                          ]}>
+                          {item.title}
+                        </Text>
+                        <Text
+                          style={[
+                            styles.thumbViewsText,
+                            getState?.themeMode
+                              ? {color: '#fff'}
+                              : {color: '#030303'},
+                          ]}>
+                          {item.views} Views, {item.uploadTime}
+                        </Text>
+                      </View>
+                    </View>
+                    <Entypo
+                      name="dots-three-vertical"
+                      color={getState.themeMode ? '#fff' : '#000'}
+                      size={hp('3')}
+                    />
                   </View>
-                  <Entypo
-                    name="dots-three-vertical"
-                    color={getState.themeMode ? '#fff' : '#000'}
-                    size={hp('3')}
-                  />
-                </View>
-              </TouchableOpacity>
-            );
-          }}
-        />
+                </TouchableOpacity>
+              );
+            }}
+          />
+        
       </View>
     );
   }
@@ -720,7 +730,7 @@ const styles = StyleSheet.create({
   },
   videoHeaderContainer: {
     position: 'absolute',
-    top: hp('1'),
+    top: Platform.OS === "ios" ? hp(8) : hp('1'),
     left: wp('2'),
   },
   videoControlsContainer: {
@@ -729,7 +739,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    top: hp('12'),
+    top: Platform.OS === "ios" ? hp(18) : hp('12'),
   },
   videoControlIconsContainer: {
     width: wp('75'),
@@ -750,7 +760,7 @@ const styles = StyleSheet.create({
     width: wp('100'),
     // backgroundColor: '#000000aa',
     position: 'absolute',
-    top: hp('24'),
+    top: Platform.OS === "ios" ? hp(30) : hp('24'),
   },
   volumeSlider: {
     width: wp('20'),
@@ -774,7 +784,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   slider: {
-    width: wp('100'),
+    width: wp('98'),
     height: hp('2'),
   },
   titleVideoContainer: {
