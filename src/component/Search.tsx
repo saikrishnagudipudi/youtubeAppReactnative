@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {
   FlatList,
   Image,
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -58,89 +59,91 @@ class Search extends Component<IProps, IState> {
     );
     return (
       <View
-      testID='searchScreen'
+        testID="searchScreen"
         style={[
           styles.searchContainer,
           getState.themeMode
             ? {backgroundColor: '#000000cc'}
             : {backgroundColor: '#ffffff'},
         ]}>
-        <View style={styles.searchHeaderContainer}>
-          <AntDesign
-            name="arrowleft"
-            testID='arrowLeft'
-            color={this.getThemeModeRenderColor()}
-            size={hp('4')}
-            onPress={this.goBack}
-          />
-          <View
-            style={[
-              styles.inputContainer,
-              {borderColor: this.getThemeModeRenderColor()},
-            ]}>
-            <TextInput
-            testID='searchVideo'
-              onChangeText={text => this.onChangeSearch(text)}
-              value={searchInput}
-              style={[styles.input, {color: this.getThemeModeRenderColor()}]}
-              placeholder="Search..."
-              placeholderTextColor={this.getThemeModeRenderColor()}
-            />
+        <SafeAreaView>
+          <View style={styles.searchHeaderContainer}>
             <AntDesign
-              name="search1"
+              name="arrowleft"
+              testID="arrowLeft"
               color={this.getThemeModeRenderColor()}
-              size={hp('3')}
+              size={hp('4')}
+              onPress={this.goBack}
+            />
+            <View
+              style={[
+                styles.inputContainer,
+                {borderColor: this.getThemeModeRenderColor()},
+              ]}>
+              <TextInput
+                testID="searchVideo"
+                onChangeText={text => this.onChangeSearch(text)}
+                value={searchInput}
+                style={[styles.input, {color: this.getThemeModeRenderColor()}]}
+                placeholder="Search..."
+                placeholderTextColor={this.getThemeModeRenderColor()}
+              />
+              <AntDesign
+                name="search1"
+                color={this.getThemeModeRenderColor()}
+                size={hp('3')}
+              />
+            </View>
+            <MaterialIcons
+              name="keyboard-voice"
+              color={this.getThemeModeRenderColor()}
+              size={hp('4')}
             />
           </View>
-          <MaterialIcons
-            name="keyboard-voice"
-            color={this.getThemeModeRenderColor()}
-            size={hp('4')}
-          />
-        </View>
-        <FlatList
-          data={filterSearchList}
-          keyExtractor={item => item.id}
-          renderItem={({item}) => {
-            return (
-              <TouchableOpacity
-              testID={`SearchVideo${item.id}`}
-                style={styles.searchItemContainer}
-                onPress={() => this.onPlayVideo(item.id)}>
-                <View style={styles.searchItemTitleContainer}>
-                  <Image
-                    style={styles.searchImage}
-                    source={{uri: item.thumbnailUrl}}
-                    resizeMode="stretch"
-                  />
-                  <View style={styles.searchTitleContainer}>
-                    <Text
-                      style={[
-                        styles.searchTitle,
-                        {color: this.getThemeModeRenderColor()},
-                      ]}>
-                      {item.title}
-                    </Text>
-                    <Text
-                      style={[
-                        styles.searchAuthorText,
-                        getState.themeMode
-                          ? {color: '#fff'}
-                          : {color: '#030303'},
-                      ]}>
-                      {item.author}
-                    </Text>
+          <FlatList
+            data={filterSearchList}
+            keyExtractor={item => item.id}
+            renderItem={({item}) => {
+              return (
+                <TouchableOpacity
+                  testID={`SearchVideo${item.id}`}
+                  style={styles.searchItemContainer}
+                  onPress={() => this.onPlayVideo(item.id)}>
+                  <View style={styles.searchItemTitleContainer}>
+                    <Image
+                      style={styles.searchImage}
+                      source={{uri: item.thumbnailUrl}}
+                      resizeMode="stretch"
+                    />
+                    <View style={styles.searchTitleContainer}>
+                      <Text
+                        style={[
+                          styles.searchTitle,
+                          {color: this.getThemeModeRenderColor()},
+                        ]}>
+                        {item.title}
+                      </Text>
+                      <Text
+                        style={[
+                          styles.searchAuthorText,
+                          getState.themeMode
+                            ? {color: '#fff'}
+                            : {color: '#030303'},
+                        ]}>
+                        {item.author}
+                      </Text>
+                    </View>
                   </View>
-                </View>
-                <Entypo
-                  name="dots-three-vertical"
-                  color={this.getThemeModeRenderColor()}
-                  size={hp('3')}
-                />
-              </TouchableOpacity>
-            );
-          }}
-        />
+                  <Entypo
+                    name="dots-three-vertical"
+                    color={this.getThemeModeRenderColor()}
+                    size={hp('3')}
+                  />
+                </TouchableOpacity>
+              );
+            }}
+          />
+        </SafeAreaView>
       </View>
     );
   }
@@ -169,7 +172,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   inputContainer: {
-    height: hp('7'),
+    height: hp('5.5'),
     width: wp('75'),
     flexDirection: 'row',
     // justifyContent: 'center',
